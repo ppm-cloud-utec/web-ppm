@@ -1,62 +1,90 @@
 # web-ppm
 
-FrontEnd del SaaS PPM. **Next.js desplegado en AWS Amplify.**
+FrontEnd del SaaS PPM. **Next.js 16 desplegado en AWS Amplify.**
 
 - **Responsable:** @alxgr-08
 - Vale **6 de los 20 puntos** de la rúbrica: es el entregable individual más pesado.
 
+## Las 6 pantallas
+
+| Ruta | Pantalla | Microservicios que consume |
+|---|---|---|
+| `/` | Login con selector de organización | ms-identidad |
+| `/dashboard` | **Dashboard ejecutivo:** las 4 preguntas del producto | ms-analitico, ms-portafolios |
+| `/admision` | Bandeja de admisión rankeada + panel de capacidad | ms-portafolios |
+| `/proyectos` | Tabla filtrable y paginada | ms-portafolios |
+| `/proyectos/{id}` | Detalle: tareas, partidas, historial | ms-portafolios, ms-tareas, ms-presupuestos |
+| `/kanban` | Tablero por estado, arrastrable | ms-portafolios |
+| `/carga` | **Workload:** ocupación de cada persona | ms-recursos |
+
 ## Arrancar
 
 ```bash
-npx create-next-app@latest . --typescript --tailwind --app --eslint
+npm install
+cp .env.local.example .env.local   # y pon las URLs reales
 npm run dev
 ```
 
-## Las 6 pantallas
+## Trabajar sin esperar al backend
 
-Tomadas de lo que coinciden monday.com, Smartsheet y Planview:
+```bash
+# en .env.local
+NEXT_PUBLIC_USAR_MOCKS=true
+```
 
-| Pantalla | Qué muestra | Microservicio |
-|---|---|---|
-| **Login + selector de tenant** | entrada, guarda el JWT | ms-identidad |
-| **Bandeja de admisión** | propuestas pendientes, ranking por score, aprobar/rechazar | ms-portafolios |
-| **Tabla de proyectos** | listado filtrable: estado, prioridad, avance, presupuesto | ms-portafolios |
-| **Kanban** | proyectos o tareas en columnas por estado | ms-portafolios / ms-tareas |
-| **Carga del equipo** | % de ocupación semanal por persona, rojo si pasa del 100% | ms-recursos |
-| **Dashboard ejecutivo** | semáforo del portafolio, aprobado vs ejecutado, ranking | ms-analitico |
+`lib/mock.ts` devuelve datos con **la misma forma** que la API. Las pantallas
+se construyen y se revisan antes de que los microservicios estén desplegados;
+cuando lo estén, se pone en `false` y nada más cambia.
 
-Opcional si sobra tiempo: **Gantt** con hitos y dependencias (es la más caro de
-construir, se recorta primero).
+Es lo que evita que el frontend quede para la última semana valiendo 6 puntos.
 
-## Reglas
+## Cómo hablan las pantallas con el backend
 
-1. **El token va en `Authorization: Bearer <jwt>`** en toda llamada. El
-   `tenant_id` ya está dentro del token: **nunca lo mandes en el body ni en la
-   URL**.
-2. Todos los microservicios responden igual, así que un solo cliente HTTP
-   sirve para los 6:
-   ```ts
-   { ok: true,  datos: T, meta?: { total: number } }
-   { ok: false, error: { codigo: string, mensaje: string } }
-   ```
-3. Un `.env.local` con una variable por microservicio:
-   ```
-   NEXT_PUBLIC_API_IDENTIDAD=https://xxxx.execute-api.us-east-1.amazonaws.com/dev
-   NEXT_PUBLIC_API_PORTAFOLIOS=...
-   NEXT_PUBLIC_API_TAREAS=...
-   NEXT_PUBLIC_API_RECURSOS=...
-   NEXT_PUBLIC_API_PRESUPUESTOS=...
-   NEXT_PUBLIC_API_ANALITICO=...
-   ```
-   En Amplify las mismas variables van en *Environment variables*.
-4. **No esperes a que el backend esté listo.** Arranca con mocks en
-   `lib/mock/` que devuelvan la forma de arriba, y cambia la URL cuando cada
-   microservicio despliegue. Si esperas, el frontend queda para la semana 4 y
-   vale 6 puntos.
+`lib/api.ts` es el único cliente HTTP. Los 6 microservicios responden igual:
 
-## Deploy en Amplify
+```ts
+{ ok: true,  datos: T, meta?: {...} }
+{ ok: false, error: { codigo, mensaje } }
+```
 
-Consola de Amplify → *Host a web app* → GitHub → repo `web-ppm` → rama `main`.
-Amplify detecta Next.js solo. Agregar las variables de entorno y desplegar.
+Tres cosas que hace el cliente y conviene saber:
+
+1. **El token va en `Authorization: Bearer`** en toda llamada. El `tenant_id`
+   está **dentro del token** — nunca se manda en el body ni en la URL.
+2. **Un 401 cierra la sesión y vuelve al login.** Los tokens duran 12 horas; sin
+   esto, al vencer quedaría una pantalla llena de errores raros.
+3. **Un fallo de red da un mensaje útil** ("revisa que esté desplegado y que el
+   CORS permita este origen") en vez de un `TypeError: Failed to fetch`.
+
+## El momento clave de la demo
+
+En `/proyectos/{id}`, el botón **Completar** llama **solo a ms-tareas**. El
+avance del proyecto que se ve arriba lo recalcula **ms-portafolios** al recibir
+`tarea.completada` por SQS. La pantalla espera un momento, recarga, y el
+porcentaje ya cambió:
+
+> *El avance pasó de 40.0% a 60.0% (3 de 5 tareas). El frontend nunca llamó a
+> ms-portafolios.*
+
+Eso es lo que demuestra que el sistema es event-driven y no un monolito
+repartido.
+
+## Desplegar en Amplify
+
+1. Consola de Amplify → *Host a web app* → GitHub → repo `web-ppm` → rama `main`
+2. Amplify detecta Next.js solo; `amplify.yml` ya está en el repo
+3. En *App settings → Environment variables*, las 6 `NEXT_PUBLIC_API_*`
+4. Deploy
 
 La URL pública va en el informe.
+
+## Verificado
+
+- `npx tsc --noEmit` sin errores
+- `npm run build` compila las 8 rutas
+- Las 6 pantallas probadas en el navegador con datos simulados
+
+## Documentación
+
+- [Propuesta funcional](https://github.com/ppm-cloud-utec/infra-compartida/blob/main/docs/propuesta.md) — de dónde salen estas pantallas
+- [Arquitectura general](https://github.com/ppm-cloud-utec/infra-compartida/blob/main/docs/arquitectura.md)
