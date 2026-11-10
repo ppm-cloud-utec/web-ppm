@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 
 import { FalloApi, llamar, pct, USAR_MOCKS } from "@/lib/api";
 import { CARGA } from "@/lib/mock";
-import { Cargando, Error_, Tarjeta, Vacio } from "@/components/ui";
+import { Cargando, Error_, Persona, Tarjeta, Vacio } from "@/components/ui";
 
 type Persona = {
   recurso_id: number;
@@ -96,7 +96,7 @@ export default function Carga() {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-xl font-semibold text-slate-900">
+        <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
           Carga del equipo
         </h1>
         <p className="text-sm text-slate-500">
@@ -144,7 +144,6 @@ export default function Carga() {
             <thead className="bg-slate-50 text-left text-xs uppercase text-slate-500">
               <tr>
                 <th className="px-4 py-2 font-medium">Persona</th>
-                <th className="px-4 py-2 font-medium">Rol</th>
                 <th className="px-4 py-2 text-right font-medium">Capacidad</th>
                 <th className="w-64 px-4 py-2 font-medium">Ocupación</th>
                 <th className="px-4 py-2 text-right font-medium">Horas comp.</th>
@@ -157,10 +156,13 @@ export default function Carga() {
                   key={p.recurso_id}
                   className={p.sobreasignado ? "bg-red-50/40" : ""}
                 >
-                  <td className="px-4 py-2 font-medium text-slate-900">
-                    {p.nombre}
+                  <td className="px-4 py-2">
+                    <Persona
+                      nombre={p.nombre}
+                      id={String(p.recurso_id)}
+                      detalle={p.rol_tecnico}
+                    />
                   </td>
-                  <td className="px-4 py-2 text-slate-600">{p.rol_tecnico}</td>
                   <td className="px-4 py-2 text-right tabular-nums text-slate-600">
                     {p.capacidad_horas_semana} h
                   </td>

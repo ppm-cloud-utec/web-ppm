@@ -70,7 +70,7 @@ export default function Kanban() {
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-xl font-semibold text-slate-900">Kanban</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Kanban</h1>
         <p className="text-sm text-slate-500">
           Arrastra una tarjeta a otra columna para cambiar el estado del proyecto
         </p>

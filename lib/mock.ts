@@ -40,12 +40,14 @@ export const SERIE = [
 ];
 
 export const PROYECTOS = [
-  { id: 1, codigo: "PRY-ACM-00001", nombre: "Edificio Comas", estado: "en_curso", prioridad_score: 88.4, avance_pct: 40, salud: "ambar", en_riesgo: false, presupuesto_estimado: 740000, portafolio: "Obras Lima Norte 2024-00" },
-  { id: 2, codigo: "PRY-ACM-00002", nombre: "Puente Callao", estado: "en_curso", prioridad_score: 81.2, avance_pct: 92, salud: "verde", en_riesgo: false, presupuesto_estimado: 520000, portafolio: "Infraestructura Vial 2024-02" },
-  { id: 3, codigo: "PRY-ACM-00003", nombre: "Via Ate", estado: "en_curso", prioridad_score: 76.9, avance_pct: 34, salud: "rojo", en_riesgo: true, presupuesto_estimado: 890000, portafolio: "Infraestructura Vial 2024-02" },
-  { id: 4, codigo: "PRY-ACM-00004", nombre: "Colegio Lurin", estado: "aprobado", prioridad_score: 71.5, avance_pct: 0, salud: "verde", en_riesgo: false, presupuesto_estimado: 310000, portafolio: "Edificaciones Corporativas 2024-03" },
-  { id: 5, codigo: "PRY-ACM-00005", nombre: "Reservorio Carabayllo", estado: "en_pausa", prioridad_score: 64.0, avance_pct: 48, salud: "ambar", en_riesgo: false, presupuesto_estimado: 455000, portafolio: "Saneamiento 2024-04" },
-  { id: 6, codigo: "PRY-ACM-00006", nombre: "Mercado Chorrillos", estado: "cerrado", prioridad_score: 59.8, avance_pct: 100, salud: "verde", en_riesgo: false, presupuesto_estimado: 280000, portafolio: "Obras Lima Sur 2024-01" },
+  { id: 1, codigo: "PRY-ACM-00001", nombre: "Edificio Comas", estado: "en_curso", prioridad_score: 88.4, avance_pct: 40, salud: "ambar", en_riesgo: false, presupuesto_estimado: 740000, portafolio: "Obras Lima Norte 2024-00", responsable: "Ana Quispe", responsable_id: "r1", fecha_fin_estimada: "2026-12-20" },
+  { id: 2, codigo: "PRY-ACM-00002", nombre: "Puente Callao", estado: "en_curso", prioridad_score: 81.2, avance_pct: 92, salud: "verde", en_riesgo: false, presupuesto_estimado: 520000, portafolio: "Infraestructura Vial 2024-02", responsable: "Luis Flores", responsable_id: "r2", fecha_fin_estimada: "2026-11-28" },
+  { id: 3, codigo: "PRY-ACM-00003", nombre: "Via Ate", estado: "en_curso", prioridad_score: 76.9, avance_pct: 34, salud: "rojo", en_riesgo: true, presupuesto_estimado: 890000, portafolio: "Infraestructura Vial 2024-02", responsable: "Carmen Rojas", responsable_id: "r3", fecha_fin_estimada: "2026-10-30" },
+  { id: 4, codigo: "PRY-ACM-00004", nombre: "Colegio Lurin", estado: "aprobado", prioridad_score: 71.5, avance_pct: 0, salud: "verde", en_riesgo: false, presupuesto_estimado: 310000, portafolio: "Edificaciones Corporativas 2024-03", responsable: "Jose Vargas", responsable_id: "r4", fecha_fin_estimada: "2027-03-15" },
+  { id: 5, codigo: "PRY-ACM-00005", nombre: "Reservorio Carabayllo", estado: "en_pausa", prioridad_score: 64.0, avance_pct: 48, salud: "ambar", en_riesgo: false, presupuesto_estimado: 455000, portafolio: "Saneamiento 2024-04", responsable: "Rosa Castillo", responsable_id: "r5", fecha_fin_estimada: "2027-01-10" },
+  { id: 6, codigo: "PRY-ACM-00006", nombre: "Mercado Chorrillos", estado: "cerrado", prioridad_score: 59.8, avance_pct: 100, salud: "verde", en_riesgo: false, presupuesto_estimado: 280000, portafolio: "Obras Lima Sur 2024-01", responsable: "Carlos Ramos", responsable_id: "r6", fecha_fin_estimada: "2026-09-30" },
+  { id: 7, codigo: "PRY-ACM-00007", nombre: "Planta Villa El Salvador", estado: "en_curso", prioridad_score: 55.1, avance_pct: 71, salud: "verde", en_riesgo: false, presupuesto_estimado: 680000, portafolio: "Obras Lima Sur 2024-01", responsable: "Ana Quispe", responsable_id: "r1", fecha_fin_estimada: "2027-02-01" },
+  { id: 8, codigo: "PRY-ACM-00008", nombre: "Canal San Juan", estado: "propuesto", prioridad_score: 48.3, avance_pct: 0, salud: "verde", en_riesgo: false, presupuesto_estimado: 540000, portafolio: "Saneamiento 2024-04", responsable: null, responsable_id: null, fecha_fin_estimada: null },
 ];
 
 export const PROPUESTAS = [
@@ -67,11 +69,11 @@ export const CARGA = [
 // completar una mas sube a 60. Los mocks tienen que ser CONSISTENTES entre si,
 // o la demo con datos simulados muestra numeros que se contradicen.
 export const TAREAS = [
-  { tarea_id: "a1", nombre: "Excavacion sector A", tipo: "tarea", estado: "completada", fecha_fin: "2026-09-20", horas_estimadas: 40 },
-  { tarea_id: "a2", nombre: "Encofrado nivel 1", tipo: "tarea", estado: "completada", fecha_fin: "2026-10-02", horas_estimadas: 24 },
-  { tarea_id: "a3", nombre: "Vaciado de concreto nivel 1", tipo: "hito", estado: "en_progreso", fecha_fin: "2026-11-10", horas_estimadas: 80 },
-  { tarea_id: "a4", nombre: "Instalaciones electricas nivel 1", tipo: "tarea", estado: "pendiente", fecha_fin: "2026-11-25", horas_estimadas: 40 },
-  { tarea_id: "a5", nombre: "Acabados fachada", tipo: "tarea", estado: "pendiente", fecha_fin: "2026-12-15", horas_estimadas: 60 },
+  { tarea_id: "a1", nombre: "Excavacion sector A", tipo: "tarea", estado: "completada", fecha_fin: "2026-09-20", horas_estimadas: 40, responsable: "Luis Flores", responsable_id: "r2" },
+  { tarea_id: "a2", nombre: "Encofrado nivel 1", tipo: "tarea", estado: "completada", fecha_fin: "2026-10-02", horas_estimadas: 24, responsable: "Carlos Ramos", responsable_id: "r6" },
+  { tarea_id: "a3", nombre: "Vaciado de concreto nivel 1", tipo: "hito", estado: "en_progreso", fecha_fin: "2026-11-10", horas_estimadas: 80, responsable: "Ana Quispe", responsable_id: "r1" },
+  { tarea_id: "a4", nombre: "Instalaciones electricas nivel 1", tipo: "tarea", estado: "pendiente", fecha_fin: "2026-11-25", horas_estimadas: 40, responsable: "Jose Vargas", responsable_id: "r4" },
+  { tarea_id: "a5", nombre: "Acabados fachada", tipo: "tarea", estado: "pendiente", fecha_fin: "2026-12-15", horas_estimadas: 60, responsable: null, responsable_id: null },
 ];
 
 export const PRESUPUESTO = {

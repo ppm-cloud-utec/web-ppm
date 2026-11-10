@@ -121,7 +121,7 @@ export default function Admision() {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-xl font-semibold text-slate-900">
+        <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
           Admisión de demanda
         </h1>
         <p className="text-sm text-slate-500">

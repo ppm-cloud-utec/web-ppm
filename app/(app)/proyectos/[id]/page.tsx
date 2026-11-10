@@ -15,7 +15,9 @@ import { useParams } from "next/navigation";
 
 import { FalloApi, llamar, pct, soles, USAR_MOCKS } from "@/lib/api";
 import { PRESUPUESTO, PROYECTOS, TAREAS } from "@/lib/mock";
-import { Barra, Cargando, Error_, Estado, Semaforo } from "@/components/ui";
+import {
+  Barra, BarraPresupuesto, Cargando, Error_, Estado, Fecha, Persona, Semaforo,
+} from "@/components/ui";
 
 type Proyecto = {
   id: number; codigo: string; nombre: string; descripcion: string;
@@ -132,7 +134,7 @@ export default function DetalleProyecto() {
           ← Proyectos
         </Link>
         <div className="mt-1 flex items-center gap-3">
-          <h1 className="text-xl font-semibold text-slate-900">
+          <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
             {proyecto.nombre}
           </h1>
           <Semaforo salud={proyecto.salud} />
@@ -189,12 +191,11 @@ export default function DetalleProyecto() {
                 {pct(presupuesto.ejecutado_pct)}
               </p>
               <div className="mt-2">
-                <Barra valor={Number(presupuesto.ejecutado_pct)} invertido />
+                <BarraPresupuesto
+                  gastado={Number(presupuesto.total_gastado)}
+                  aprobado={Number(presupuesto.monto_aprobado)}
+                />
               </div>
-              <p className="mt-1 text-xs text-slate-500">
-                {soles(presupuesto.total_gastado)} de{" "}
-                {soles(presupuesto.monto_aprobado)}
-              </p>
             </>
           ) : (
             <p className="mt-2 text-sm text-slate-500">
@@ -231,9 +232,13 @@ export default function DetalleProyecto() {
                           hito
                         </span>
                       )}
-                      <div className="text-xs text-slate-400">
-                        {t.fecha_fin ?? "sin fecha"} · {t.horas_estimadas} h
+                      <div className="mt-0.5 flex items-center gap-3 text-xs text-slate-400">
+                        <Fecha valor={t.fecha_fin} vence={t.estado !== "completada"} />
+                        <span>{t.horas_estimadas} h</span>
                       </div>
+                    </td>
+                    <td className="px-4 py-2">
+                      <Persona nombre={(t as any).responsable} id={(t as any).responsable_id} />
                     </td>
                     <td className="px-4 py-2">
                       <Estado estado={t.estado} />
@@ -255,7 +260,7 @@ export default function DetalleProyecto() {
                 ))}
                 {tareas.length === 0 && (
                   <tr>
-                    <td colSpan={3} className="px-4 py-8 text-center text-sm text-slate-500">
+                    <td colSpan={4} className="px-4 py-8 text-center text-sm text-slate-500">
                       Este proyecto no tiene tareas.
                     </td>
                   </tr>
