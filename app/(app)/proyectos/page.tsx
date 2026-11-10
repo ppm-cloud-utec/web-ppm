@@ -195,7 +195,7 @@ export default function Proyectos() {
             filas={visibles}
             clave={(p) => p.id}
             ordenInicial={{ col: "prioridad_score", desc: true }}
-            onFila={(p) => router.push(`/proyectos/${p.id}`)}
+            onFila={(p) => router.push(`/proyecto?id=${p.id}`)}
           />
 
           {paginas > 1 && (

@@ -13,7 +13,7 @@ FrontEnd del SaaS PPM. **Next.js 16 desplegado en AWS Amplify.**
 | `/dashboard` | **Dashboard ejecutivo:** las 4 preguntas del producto | ms-analitico, ms-portafolios |
 | `/admision` | Bandeja de admisión rankeada + panel de capacidad | ms-portafolios |
 | `/proyectos` | Tabla filtrable y paginada | ms-portafolios |
-| `/proyectos/{id}` | Detalle: tareas, partidas, historial | ms-portafolios, ms-tareas, ms-presupuestos |
+| `/proyecto?id=N` | Detalle: tareas, partidas, historial | ms-portafolios, ms-tareas, ms-presupuestos |
 | `/kanban` | Tablero por estado, arrastrable | ms-portafolios |
 | `/carga` | **Workload:** ocupación de cada persona | ms-recursos |
 
@@ -71,12 +71,40 @@ repartido.
 
 ## Desplegar en Amplify
 
-1. Consola de Amplify → *Host a web app* → GitHub → repo `web-ppm` → rama `main`
-2. Amplify detecta Next.js solo; `amplify.yml` ya está en el repo
-3. En *App settings → Environment variables*, las 6 `NEXT_PUBLIC_API_*`
-4. Deploy
+**URL en producción:** https://main.d1x0c0t0mq8zy7.amplifyapp.com
 
-La URL pública va en el informe.
+### Por qué es un sitio estático
+
+`output: "export"`. Todas las pantallas son `"use client"` y los datos llegan
+de las APIs en tiempo de ejecución, así que no hay nada que renderizar en
+servidor. Amplify lo sirve sin cómputo: más barato, más rápido, y permite
+desplegar por CLI sin conectar GitHub.
+
+Por eso el detalle de proyecto es `/proyecto?id=N` y no `/proyectos/[id]`: una
+ruta dinámica obligaría a Next a conocer todos los ids en tiempo de build.
+
+### Opción A — despliegue manual por CLI (la que se usó)
+
+```bash
+npm run build                       # genera out/
+cd out && zip -qr ../web.zip . && cd ..
+
+APP=<app-id>
+D=$(aws amplify create-deployment --app-id $APP --branch-name main --output json)
+curl -X PUT -T web.zip -H "Content-Type: application/zip" \
+  "$(echo $D | jq -r .zipUploadUrl)"
+aws amplify start-deployment --app-id $APP --branch-name main \
+  --job-id "$(echo $D | jq -r .jobId)"
+```
+
+No requiere autorizar GitHub en Amplify.
+
+### Opción B — conectado a GitHub
+
+Consola de Amplify → *Host a web app* → GitHub → `web-ppm` → `main`.
+`amplify.yml` ya está en el repo (`baseDirectory: out`). Hay que poner las 7
+variables `NEXT_PUBLIC_*` en *App settings → Environment variables*: se
+incrustan en tiempo de build, no se leen en ejecución.
 
 ## Verificado
 

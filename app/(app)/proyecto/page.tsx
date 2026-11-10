@@ -9,9 +9,9 @@
  * lo haya dicho a nadie.
  */
 
-import { useCallback, useEffect, useState } from "react";
+import { Suspense, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 import { FalloApi, llamar, pct, soles, USAR_MOCKS } from "@/lib/api";
 import { PRESUPUESTO, PROYECTOS, TAREAS } from "@/lib/mock";
@@ -35,8 +35,16 @@ type Tarea = {
 
 type Presupuesto = typeof PRESUPUESTO;
 
-export default function DetalleProyecto() {
-  const { id } = useParams<{ id: string }>();
+/**
+ * El id viaja como parametro de consulta (?id=7) y no como segmento de ruta.
+ *
+ * Asi la app entera compila como sitio ESTATICO: no hay rutas dinamicas que
+ * Next tenga que conocer en tiempo de build. Todas las pantallas son
+ * "use client" y los datos llegan de las APIs en ejecucion, asi que no se
+ * pierde nada, y Amplify puede servirla sin computo en servidor.
+ */
+function Detalle() {
+  const id = useSearchParams().get("id") ?? "";
   const [proyecto, setProyecto] = useState<Proyecto | null>(null);
   const [tareas, setTareas] = useState<Tarea[]>([]);
   const [presupuesto, setPresupuesto] = useState<Presupuesto | null>(null);
@@ -332,5 +340,14 @@ export default function DetalleProyecto() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function DetalleProyecto() {
+  // useSearchParams exige un limite de Suspense en export estatico.
+  return (
+    <Suspense fallback={<Cargando que="el proyecto" />}>
+      <Detalle />
+    </Suspense>
   );
 }

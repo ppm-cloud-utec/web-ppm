@@ -110,7 +110,7 @@ export default function Kanban() {
                     }`}
                   >
                     <Link
-                      href={`/proyectos/${p.id}`}
+                      href={`/proyecto?id=${p.id}`}
                       className="font-medium text-slate-900 hover:underline"
                     >
                       {p.nombre}

@@ -179,7 +179,7 @@ export default function Dashboard() {
             {riesgo.slice(0, 6).map((p) => (
               <Link
                 key={p.id}
-                href={`/proyectos/${p.id}`}
+                href={`/proyecto?id=${p.id}`}
                 className="flex items-center gap-4 px-4 py-3 hover:bg-slate-50"
               >
                 <Semaforo salud={p.salud} mini />
