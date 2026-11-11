@@ -150,6 +150,18 @@ export async function llamar<T>(
 
   // Error con NUESTRA forma: { ok: false, error: { codigo, mensaje } }
   const propio = (cuerpo as ErrorApi).error;
+
+  // 403: el token es valido pero el recurso es de otra organizacion o el rol
+  // no alcanza. No cierra la sesion (a diferencia del 401).
+  if (r.status === 403) {
+    throw new FalloApi(
+      propio?.codigo ?? "PROHIBIDO",
+      propio?.mensaje ??
+        "No tienes permiso sobre este recurso. Puede pertenecer a otra organizacion o tu rol no lo permite.",
+      403,
+    );
+  }
+
   if (propio?.codigo) {
     throw new FalloApi(propio.codigo, propio.mensaje, r.status);
   }
