@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  // No generar AGENTS.md/CLAUDE.md en el repo del equipo
+  // No generar archivos de instrucciones para asistentes de IA en el repo
   agentRules: false,
 
   // Sitio ESTATICO. Todas las pantallas son "use client" y los datos llegan

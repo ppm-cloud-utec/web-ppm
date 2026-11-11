@@ -9,9 +9,5 @@ build/
 *.log
 .vercel
 
-# Generados por Next para agentes de IA
-AGENTS.md
-CLAUDE.md
-
 # Cache de TypeScript
 *.tsbuildinfo
