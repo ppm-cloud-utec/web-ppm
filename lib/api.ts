@@ -132,15 +132,47 @@ export async function llamar<T>(
   const cuerpo = (await r.json().catch(() => null)) as
     | Respuesta<T>
     | ErrorApi
+    | { message?: string }
     | null;
 
   if (!cuerpo) {
-    throw new FalloApi("RESPUESTA_INVALIDA", `${servicio} no devolvio JSON`, r.status);
+    throw new FalloApi(
+      "RESPUESTA_INVALIDA",
+      `${servicio} respondió ${r.status} sin JSON.`,
+      r.status,
+    );
   }
-  if (!cuerpo.ok) {
-    throw new FalloApi(cuerpo.error.codigo, cuerpo.error.mensaje, r.status);
+
+  if ((cuerpo as Respuesta<T>).ok === true) {
+    const okCuerpo = cuerpo as Respuesta<T>;
+    return { datos: okCuerpo.datos, meta: okCuerpo.meta };
   }
-  return { datos: cuerpo.datos, meta: cuerpo.meta };
+
+  // Error con NUESTRA forma: { ok: false, error: { codigo, mensaje } }
+  const propio = (cuerpo as ErrorApi).error;
+  if (propio?.codigo) {
+    throw new FalloApi(propio.codigo, propio.mensaje, r.status);
+  }
+
+  // Error generado por API GATEWAY, que tiene otra forma:
+  //   { "message": "Internal server error" }
+  // Leer error.codigo aqui reventaba con "Cannot read properties of
+  // undefined", y el usuario veia un error de JavaScript en vez de saber
+  // que el servidor fallo.
+  const generico = (cuerpo as { message?: string }).message;
+  if (r.status >= 500) {
+    throw new FalloApi(
+      "ERROR_SERVIDOR",
+      `${servicio} devolvió un error interno (${r.status}). ` +
+        "Si estás en AWS Academy, revisa que el Learner Lab esté encendido.",
+      r.status,
+    );
+  }
+  throw new FalloApi(
+    "ERROR_INESPERADO",
+    generico || `${servicio} respondió ${r.status}.`,
+    r.status,
+  );
 }
 
 /** Formatea un monto en soles sin decimales, que es como se lee un presupuesto. */
