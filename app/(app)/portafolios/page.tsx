@@ -4,18 +4,28 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-import { FalloApi, llamar, soles, USAR_MOCKS } from "@/lib/api";
+import { FalloApi, llamar, pct, soles, USAR_MOCKS } from "@/lib/api";
 import { PORTAFOLIOS } from "@/lib/mock";
 import { Tabla, type Columna } from "@/components/tabla";
-import { Cargando, Error_, Fecha, Vacio } from "@/components/ui";
+import { Cargando, Error_, Vacio } from "@/components/ui";
 
+/**
+ * Lo que devuelve GET /portafolios de ms-portafolios. Los nombres salen del
+ * SELECT del handler (`proyectos`, `comprometido`, `avance_promedio`): no son
+ * inventables, porque TypeScript no puede verificar la forma de una respuesta
+ * remota y un nombre que no coincide se renderiza vacio sin avisar.
+ */
 type Portafolio = {
   id: number;
   nombre: string;
-  descripcion?: string | null;
-  n_proyectos?: number | null;
-  presupuesto_total?: number | null;
-  creado_en?: string | null;
+  objetivo_estrategico?: string | null;
+  presupuesto_disponible?: number | string | null;
+  capacidad_horas_semana?: number | null;
+  proyectos?: number | null;
+  en_curso?: number | null;
+  en_riesgo?: number | null;
+  comprometido?: number | string | null;
+  avance_promedio?: number | string | null;
 };
 
 export default function Portafolios() {
@@ -23,7 +33,9 @@ export default function Portafolios() {
   const [error, setError] = useState("");
   const [abierto, setAbierto] = useState(false);
   const [nombre, setNombre] = useState("");
+  const [objetivo, setObjetivo] = useState("");
   const [descripcion, setDescripcion] = useState("");
+  const [disponible, setDisponible] = useState("");
   const [guardando, setGuardando] = useState(false);
   const [errorForm, setErrorForm] = useState("");
   const [aviso, setAviso] = useState("");
@@ -50,10 +62,26 @@ export default function Portafolios() {
     setGuardando(true);
     setErrorForm("");
     try {
-      const cuerpo = { nombre: nombre.trim(), descripcion: descripcion.trim() };
+      // ms-portafolios valida con campos_permitidos(): un campo de mas da 400,
+      // asi que los opcionales vacios NO se mandan en vez de ir como "".
+      const cuerpo: Record<string, unknown> = {
+        nombre: nombre.trim(),
+        objetivo_estrategico: objetivo.trim(),
+      };
+      if (descripcion.trim()) cuerpo.descripcion = descripcion.trim();
+      if (disponible.trim()) cuerpo.presupuesto_disponible = Number(disponible);
+
       if (USAR_MOCKS) {
         setLista((l) => [
-          { id: (l?.length ?? 0) + 1, ...cuerpo, n_proyectos: 0, presupuesto_total: 0 },
+          {
+            id: (l?.length ?? 0) + 1,
+            nombre: nombre.trim(),
+            objetivo_estrategico: objetivo.trim(),
+            presupuesto_disponible: Number(disponible || 0),
+            proyectos: 0,
+            comprometido: 0,
+            avance_promedio: 0,
+          },
           ...(l ?? []),
         ]);
       } else {
@@ -62,7 +90,9 @@ export default function Portafolios() {
       }
       setAviso(`Portafolio "${cuerpo.nombre}" creado.`);
       setNombre("");
+      setObjetivo("");
       setDescripcion("");
+      setDisponible("");
       setAbierto(false);
     } catch (err) {
       setErrorForm(err instanceof FalloApi ? err.message : "No se pudo crear");
@@ -80,30 +110,38 @@ export default function Portafolios() {
       render: (p) => (
         <div className="min-w-0">
           <p className="truncate font-medium text-slate-900">{p.nombre}</p>
-          {p.descripcion && (
-            <p className="truncate text-xs text-slate-400">{p.descripcion}</p>
+          {p.objetivo_estrategico && (
+            <p className="truncate text-xs text-slate-400">{p.objetivo_estrategico}</p>
           )}
         </div>
       ),
     },
     {
-      clave: "n_proyectos", titulo: "Proyectos", numerica: true, ancho: "7rem",
-      orden: (p) => Number(p.n_proyectos ?? 0),
-      render: (p) => <span className="text-slate-700">{p.n_proyectos ?? "—"}</span>,
-    },
-    {
-      clave: "presupuesto_total", titulo: "Presupuesto", numerica: true, ancho: "9rem",
-      orden: (p) => Number(p.presupuesto_total ?? 0),
+      clave: "proyectos", titulo: "Proyectos", numerica: true, ancho: "6rem",
+      orden: (p) => Number(p.proyectos ?? 0),
       render: (p) => (
         <span className="text-slate-700">
-          {p.presupuesto_total != null ? soles(p.presupuesto_total) : "—"}
+          {p.proyectos ?? "—"}
+          {Number(p.en_riesgo ?? 0) > 0 && (
+            <span className="ml-1 text-xs text-red-600">({p.en_riesgo} en riesgo)</span>
+          )}
         </span>
       ),
     },
     {
-      clave: "creado_en", titulo: "Creado", ancho: "7rem",
-      orden: (p) => p.creado_en ?? "",
-      render: (p) => <Fecha valor={p.creado_en} />,
+      clave: "avance_promedio", titulo: "Avance", numerica: true, ancho: "6rem",
+      orden: (p) => Number(p.avance_promedio ?? 0),
+      render: (p) => <span className="text-slate-700">{pct(p.avance_promedio)}</span>,
+    },
+    {
+      clave: "comprometido", titulo: "Comprometido", numerica: true, ancho: "9rem",
+      orden: (p) => Number(p.comprometido ?? 0),
+      render: (p) => <span className="text-slate-700">{soles(p.comprometido)}</span>,
+    },
+    {
+      clave: "presupuesto_disponible", titulo: "Disponible", numerica: true, ancho: "9rem",
+      orden: (p) => Number(p.presupuesto_disponible ?? 0),
+      render: (p) => <span className="text-slate-700">{soles(p.presupuesto_disponible)}</span>,
     },
   ];
 
@@ -145,7 +183,32 @@ export default function Portafolios() {
             />
           </div>
           <div>
-            <label className="text-xs font-medium uppercase text-slate-500">Descripción</label>
+            <label className="text-xs font-medium uppercase text-slate-500">
+              Objetivo estratégico
+            </label>
+            <input
+              required
+              value={objetivo}
+              onChange={(e) => setObjetivo(e.target.value)}
+              placeholder="Ej. Ampliar cobertura en el cono norte"
+              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-1.5 text-sm focus:border-slate-400 focus:outline-none"
+            />
+          </div>
+          <div>
+            <label className="text-xs font-medium uppercase text-slate-500">
+              Presupuesto disponible (opcional)
+            </label>
+            <input
+              type="number" min="0" step="0.01"
+              value={disponible}
+              onChange={(e) => setDisponible(e.target.value)}
+              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-1.5 text-sm focus:border-slate-400 focus:outline-none"
+            />
+          </div>
+          <div>
+            <label className="text-xs font-medium uppercase text-slate-500">
+              Descripción (opcional)
+            </label>
             <textarea
               value={descripcion}
               onChange={(e) => setDescripcion(e.target.value)}
@@ -156,7 +219,7 @@ export default function Portafolios() {
           {errorForm && <p className="text-sm text-red-700">{errorForm}</p>}
           <button
             type="submit"
-            disabled={guardando || !nombre.trim()}
+            disabled={guardando || !nombre.trim() || !objetivo.trim()}
             className="rounded-md bg-slate-900 px-3 py-1.5 text-sm font-medium text-white disabled:opacity-50"
           >
             {guardando ? "Creando…" : "Crear portafolio"}

@@ -98,7 +98,7 @@ export const PRESUPUESTO = {
 };
 
 export const PORTAFOLIOS = [
-  { id: 1, nombre: "Obras Lima Norte 2024-00", descripcion: "Edificaciones y obras civiles del cono norte", n_proyectos: 120, presupuesto_total: 18400000, creado_en: "2026-01-10" },
-  { id: 2, nombre: "Infraestructura Vial 2024-02", descripcion: "Puentes, vías y accesos", n_proyectos: 85, presupuesto_total: 24100000, creado_en: "2026-01-12" },
-  { id: 3, nombre: "Saneamiento 2024-04", descripcion: "Reservorios y redes de agua", n_proyectos: 64, presupuesto_total: 9800000, creado_en: "2026-02-03" },
+  { id: 1, nombre: "Obras Lima Norte 2024-00", objetivo_estrategico: "Edificaciones y obras civiles del cono norte", proyectos: 120, en_curso: 71, en_riesgo: 9, comprometido: 18400000, presupuesto_disponible: 21000000, avance_promedio: 46.2 },
+  { id: 2, nombre: "Infraestructura Vial 2024-02", objetivo_estrategico: "Puentes, vias y accesos", proyectos: 85, en_curso: 50, en_riesgo: 4, comprometido: 24100000, presupuesto_disponible: 26500000, avance_promedio: 58.7 },
+  { id: 3, nombre: "Saneamiento 2024-04", objetivo_estrategico: "Reservorios y redes de agua", proyectos: 64, en_curso: 38, en_riesgo: 11, comprometido: 9800000, presupuesto_disponible: 12300000, avance_promedio: 33.1 },
 ];
