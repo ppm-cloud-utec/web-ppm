@@ -48,7 +48,10 @@ function Detalle() {
   const id = useSearchParams().get("id") ?? "";
   const [proyecto, setProyecto] = useState<Proyecto | null>(null);
   const [tareas, setTareas] = useState<Tarea[]>([]);
-  const [presupuesto, setPresupuesto] = useState<Presupuesto | null>(null);
+  // undefined = aun cargando · null = el proyecto NO tiene presupuesto.
+  // Arrancar en null hacia que la pantalla afirmara "sin presupuesto"
+  // durante el primer segundo de carga, que es mentira.
+  const [presupuesto, setPresupuesto] = useState<Presupuesto | null | undefined>(undefined);
   const [error, setError] = useState("");
   const [aviso, setAviso] = useState("");
   const [completando, setCompletando] = useState<string | null>(null);
@@ -239,8 +242,14 @@ function Detalle() {
             </>
           ) : (
             <p className="mt-2 text-sm text-slate-500">
-              Sin presupuesto todavía. Se crea cuando el worker de
-              ms-presupuestos recibe <code>proyecto.creado</code>.
+              {presupuesto === undefined ? (
+                "Cargando la ejecución…"
+              ) : (
+                <>
+                  Sin presupuesto todavía. Se crea cuando el worker de
+                  ms-presupuestos recibe <code>proyecto.creado</code>.
+                </>
+              )}
             </p>
           )}
         </div>
