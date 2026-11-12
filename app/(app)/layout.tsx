@@ -21,6 +21,7 @@ import { Avatar } from "@/components/ui";
 const MENU = [
   { href: "/dashboard", texto: "Dashboard", icono: "▦" },
   { href: "/admision", texto: "Admisión", icono: "⤓" },
+  { href: "/portafolios", texto: "Portafolios", icono: "▧" },
   { href: "/proyectos", texto: "Proyectos", icono: "▤" },
   { href: "/kanban", texto: "Kanban", icono: "▥" },
   { href: "/carga", texto: "Carga del equipo", icono: "◴" },

@@ -96,3 +96,9 @@ export const PRESUPUESTO = {
     { id: 3, concepto: "Jornales", monto: 27800, fecha: "2026-10-15", proveedor: "Acme" },
   ],
 };
+
+export const PORTAFOLIOS = [
+  { id: 1, nombre: "Obras Lima Norte 2024-00", descripcion: "Edificaciones y obras civiles del cono norte", n_proyectos: 120, presupuesto_total: 18400000, creado_en: "2026-01-10" },
+  { id: 2, nombre: "Infraestructura Vial 2024-02", descripcion: "Puentes, vías y accesos", n_proyectos: 85, presupuesto_total: 24100000, creado_en: "2026-01-12" },
+  { id: 3, nombre: "Saneamiento 2024-04", descripcion: "Reservorios y redes de agua", n_proyectos: 64, presupuesto_total: 9800000, creado_en: "2026-02-03" },
+];
