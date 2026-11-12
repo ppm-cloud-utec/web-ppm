@@ -18,6 +18,7 @@ import { PRESUPUESTO, PROYECTOS, TAREAS } from "@/lib/mock";
 import {
   Barra, BarraPresupuesto, Cargando, Error_, Estado, Fecha, Persona, Semaforo,
 } from "@/components/ui";
+import { RegistrarGasto } from "@/components/registrar-gasto";
 
 type Proyecto = {
   id: number; codigo: string; nombre: string; descripcion: string;
@@ -127,6 +128,37 @@ function Detalle() {
       setError(e instanceof FalloApi ? e.message : "No se pudo completar");
     } finally {
       setCompletando(null);
+    }
+  }
+
+  async function gastoRegistrado(monto: number) {
+    const antes = Number(presupuesto?.ejecutado_pct ?? 0);
+    if (USAR_MOCKS) {
+      setPresupuesto((b) => {
+        if (!b) return b;
+        const total = Number(b.total_gastado) + monto;
+        return {
+          ...b,
+          total_gastado: total,
+          saldo: Number(b.monto_aprobado) - total,
+          ejecutado_pct: (100 * total) / Number(b.monto_aprobado),
+        };
+      });
+      setAviso(`Gasto de ${soles(monto)} registrado.`);
+      return;
+    }
+    try {
+      const { datos } = await llamar<Presupuesto>("presupuestos", `/presupuestos/${id}`);
+      setPresupuesto(datos);
+      const ahora = Number(datos.ejecutado_pct);
+      setAviso(
+        `Gasto de ${soles(monto)} registrado. La ejecución pasó de ${pct(antes)} a ${pct(ahora)}.` +
+          (ahora >= 90
+            ? " Superó el 90 %: ms-presupuestos publicó la alerta por SNS y otro microservicio la consume."
+            : ""),
+      );
+    } catch {
+      setAviso(`Gasto de ${soles(monto)} registrado.`);
     }
   }
 
@@ -310,6 +342,19 @@ function Detalle() {
                   </div>
                 ))}
               </div>
+            </section>
+          )}
+
+          {presupuesto && (
+            <section>
+              <h2 className="mb-2 text-sm font-medium text-slate-700">
+                Registrar gasto
+              </h2>
+              <RegistrarGasto
+                proyectoId={id}
+                partidas={presupuesto.partidas}
+                onRegistrado={gastoRegistrado}
+              />
             </section>
           )}
 
