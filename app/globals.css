@@ -2,11 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Tokens del producto. Se definen aqui y no sueltos por las pantallas para
+   que un cambio de identidad sea un cambio de archivo, no una caceria de
+   clases repetidas. */
 :root {
-  --fondo: #f8fafc;
+  --fondo: #f6f7f9;
+  --superficie: #ffffff;
+  --borde: #e4e7ec;
+  --borde-fuerte: #d3d8e0;
+
+  --tinta: #101828;
+  --tinta-media: #475467;
+  --tinta-suave: #8792a6;
+
+  /* Azul profundo: serio, no corporativo-genérico. Es el unico color con
+     peso de marca; el resto de la interfaz es neutro a proposito para que
+     el semaforo de salud (verde/ambar/rojo) nunca compita con el. */
+  --marca: #2d4a7c;
+  --marca-fuerte: #1d3461;
+  --marca-tenue: #eef2f8;
+
+  --sombra-carta: 0 1px 2px rgba(16, 24, 40, 0.04),
+                  0 1px 3px rgba(16, 24, 40, 0.06);
+  --sombra-elevada: 0 4px 12px rgba(16, 24, 40, 0.08);
 }
 
 body {
   background: var(--fondo);
-  color: #0f172a;
+  color: var(--tinta);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Los numeros de una tabla de presupuestos tienen que alinearse en columna:
+   sin esto el "1" ocupa menos que el "8" y las cifras bailan. */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Foco visible y consistente: se navega con teclado en una demo mas de lo
+   que uno cree. */
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid var(--marca);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

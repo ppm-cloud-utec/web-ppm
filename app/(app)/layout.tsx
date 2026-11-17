@@ -27,12 +27,6 @@ const MENU = [
   { href: "/carga", texto: "Carga del equipo", icono: "◴" },
 ];
 
-const ORGANIZACIONES: Record<string, string> = {
-  "t-acme": "Acme Ingeniería",
-  "t-globex": "Globex Consulting",
-  "t-initech": "Initech Software",
-};
-
 export default function LayoutApp({ children }: { children: React.ReactNode }) {
   const ruta = usePathname();
   const router = useRouter();
@@ -52,25 +46,25 @@ export default function LayoutApp({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen">
       {/* ---------------------------------------------------- lateral */}
-      <aside className="flex w-60 shrink-0 flex-col border-r border-slate-800 bg-slate-900">
+      <aside className="flex w-60 shrink-0 flex-col bg-[#15213a] text-slate-300">
         <div className="px-4 py-4">
           <Link href="/dashboard" className="flex items-center gap-2">
-            <span className="flex h-7 w-7 items-center justify-center rounded bg-white text-sm font-bold text-slate-900">
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/95 text-sm font-bold text-[#15213a]">
               P
             </span>
-            <span className="font-semibold text-white">Portafolio</span>
+            <span className="font-semibold tracking-tight text-white">Portafolio</span>
           </Link>
         </div>
 
         {/* Organizacion activa: lo mas visible de la barra */}
-        <div className="mx-3 mb-4 rounded-lg bg-slate-800 px-3 py-2.5">
-          <p className="text-[10px] font-medium uppercase tracking-wide text-slate-400">
+        <div className="mx-3 mb-4 rounded-xl bg-white/[0.07] px-3 py-2.5 ring-1 ring-inset ring-white/10">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
             Organización
           </p>
-          <p className="mt-0.5 truncate text-sm font-medium text-white">
-            {ORGANIZACIONES[s.tenant_id] ?? s.tenant_id}
+          <p className="mt-1 truncate text-sm font-semibold text-white">
+            {s.tenant_nombre ?? s.tenant_id}
           </p>
-          <p className="font-mono text-[11px] text-slate-400">{s.tenant_id}</p>
+          <p className="font-mono text-[11px] text-slate-500">{s.tenant_id}</p>
         </div>
 
         <nav className="flex-1 space-y-0.5 px-3">
@@ -80,12 +74,15 @@ export default function LayoutApp({ children }: { children: React.ReactNode }) {
               <Link
                 key={m.href}
                 href={m.href}
-                className={`flex items-center gap-2.5 rounded-md px-3 py-2 text-sm transition-colors ${
+                className={`relative flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors ${
                   activo
-                    ? "bg-slate-800 font-medium text-white"
-                    : "text-slate-400 hover:bg-slate-800/50 hover:text-slate-200"
+                    ? "bg-white/10 font-medium text-white"
+                    : "text-slate-400 hover:bg-white/[0.06] hover:text-slate-100"
                 }`}
               >
+                {activo && (
+                  <span className="absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-r bg-white" />
+                )}
                 <span className="w-4 text-center text-xs">{m.icono}</span>
                 {m.texto}
               </Link>
@@ -93,7 +90,7 @@ export default function LayoutApp({ children }: { children: React.ReactNode }) {
           })}
         </nav>
 
-        <div className="border-t border-slate-800 p-3">
+        <div className="border-t border-white/10 p-3">
           <div className="flex items-center gap-2.5">
             <Avatar nombre={s.nombre} id={s.usuario_id} />
             <div className="min-w-0 flex-1">
@@ -103,7 +100,7 @@ export default function LayoutApp({ children }: { children: React.ReactNode }) {
           </div>
           <button
             onClick={cerrarSesion}
-            className="mt-2 w-full rounded-md px-3 py-1.5 text-left text-xs text-slate-400 hover:bg-slate-800 hover:text-white"
+            className="mt-2 w-full rounded-lg px-3 py-1.5 text-left text-xs text-slate-400 transition-colors hover:bg-white/[0.07] hover:text-white"
           >
             Cambiar de organización / salir
           </button>
@@ -111,7 +108,7 @@ export default function LayoutApp({ children }: { children: React.ReactNode }) {
       </aside>
 
       {/* ---------------------------------------------------- contenido */}
-      <div className="min-w-0 flex-1 bg-slate-50">
+      <div className="min-w-0 flex-1">
         <main className="mx-auto max-w-[1400px] p-6">{children}</main>
       </div>
     </div>

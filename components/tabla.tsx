@@ -51,24 +51,29 @@ export function Tabla<T extends Record<string, any>>({
   }
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
+    <div className="overflow-x-auto rounded-xl border border-borde bg-superficie shadow-carta">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-slate-200 bg-slate-50/80">
+          <tr className="border-b border-borde bg-slate-50/70">
             {columnas.map((c) => {
               const activa = orden?.col === c.clave;
               return (
                 <th
                   key={c.clave}
                   style={c.ancho ? { width: c.ancho } : undefined}
-                  className={`px-3 py-2 text-xs font-medium uppercase tracking-wide ${
+                  className={`px-3 py-2.5 text-[11px] font-semibold uppercase tracking-wider ${
                     c.numerica ? "text-right" : "text-left"
-                  } text-slate-500`}
+                  } text-tinta-suave`}
                 >
                   <button
                     onClick={() => alternar(c)}
-                    className={`inline-flex items-center gap-1 hover:text-slate-900 ${
-                      activa ? "text-slate-900" : ""
+                    className={`inline-flex items-center gap-1 rounded transition-colors hover:text-tinta ${
+                      activa ? "text-tinta" : ""
+                    }`}
+                    // Decir en voz alta como esta ordenado: el simbolo solo
+                    // no llega a quien usa lector de pantalla.
+                    aria-label={`Ordenar por ${c.titulo}${
+                      activa ? (orden?.desc ? ", descendente" : ", ascendente") : ""
                     }`}
                   >
                     {c.titulo}
@@ -81,17 +86,19 @@ export function Tabla<T extends Record<string, any>>({
             })}
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-100">
+        <tbody className="divide-y divide-slate-100/80">
           {ordenadas.map((f) => (
             <tr
               key={clave(f)}
               onClick={onFila ? () => onFila(f) : undefined}
-              className={`${onFila ? "cursor-pointer" : ""} hover:bg-slate-50`}
+              className={`transition-colors ${
+                onFila ? "cursor-pointer" : ""
+              } hover:bg-marca-tenue/60`}
             >
               {columnas.map((c) => (
                 <td
                   key={c.clave}
-                  className={`px-3 py-2 ${c.numerica ? "text-right tabular-nums" : ""}`}
+                  className={`px-3 py-2.5 ${c.numerica ? "tabular text-right" : ""}`}
                 >
                   {c.render(f)}
                 </td>

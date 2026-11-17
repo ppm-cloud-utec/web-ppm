@@ -71,7 +71,9 @@ export default function Login() {
         { metodo: "POST", sinToken: true,
           cuerpo: { tenant_id: tenantId, email, password } },
       );
-      guardarSesion(datos.token, datos.usuario);
+      // El nombre sale del selector que ya cargamos, no de una tabla fija.
+      const org = tenants?.find((t) => t.tenant_id === tenantId);
+      guardarSesion(datos.token, { ...datos.usuario, tenant_nombre: org?.nombre });
       router.push("/dashboard");
     } catch (e) {
       setError(e instanceof FalloApi ? e.message : "Error inesperado");
@@ -80,27 +82,35 @@ export default function Login() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center p-6">
-      <div className="w-full max-w-sm">
-        <div className="mb-8">
-          <h1 className="text-2xl font-semibold text-slate-900">Portafolio</h1>
-          <p className="mt-1 text-sm text-slate-500">
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden p-6">
+      {/* Franja de marca: da identidad sin robarle atencion al formulario. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-marca-tenue to-transparent"
+      />
+      <div className="relative w-full max-w-sm">
+        <div className="mb-8 text-center">
+          <span className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-marca text-lg font-bold text-white shadow-elevada">
+            P
+          </span>
+          <h1 className="text-2xl font-semibold tracking-tight text-tinta">Portafolio</h1>
+          <p className="mt-1 text-sm text-tinta-media">
             Gestión de portafolios, proyectos, recursos y presupuestos
           </p>
         </div>
 
         <form
           onSubmit={entrar}
-          className="space-y-4 rounded-lg border border-slate-200 bg-white p-6"
+          className="space-y-4 rounded-2xl border border-borde bg-superficie p-6 shadow-elevada"
         >
           <div>
-            <label className="block text-sm font-medium text-slate-700">
+            <label className="block text-sm font-medium text-tinta-media">
               Organización
             </label>
             <select
               value={tenantId}
               onChange={(e) => setTenantId(e.target.value)}
-              className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+              className="mt-1.5 w-full rounded-lg border border-borde-fuerte bg-white px-3 py-2 text-sm transition-colors placeholder:text-tinta-suave hover:border-marca/40"
               required
             >
               <option value="">Elige una organización</option>
@@ -113,33 +123,33 @@ export default function Login() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700">
+            <label className="block text-sm font-medium text-tinta-media">
               Correo
             </label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+              className="mt-1.5 w-full rounded-lg border border-borde-fuerte bg-white px-3 py-2 text-sm transition-colors placeholder:text-tinta-suave hover:border-marca/40"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700">
+            <label className="block text-sm font-medium text-tinta-media">
               Contraseña
             </label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+              className="mt-1.5 w-full rounded-lg border border-borde-fuerte bg-white px-3 py-2 text-sm transition-colors placeholder:text-tinta-suave hover:border-marca/40"
               required={!USAR_MOCKS}
             />
           </div>
 
           {error && (
-            <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+            <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
               {error}
             </p>
           )}
@@ -147,7 +157,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={entrando || !tenantId}
-            className="w-full rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+            className="w-full rounded-lg bg-marca px-4 py-2.5 text-sm font-semibold text-white shadow-carta transition-colors hover:bg-marca-fuerte disabled:cursor-not-allowed disabled:opacity-50"
           >
             {entrando ? "Entrando..." : "Entrar"}
           </button>

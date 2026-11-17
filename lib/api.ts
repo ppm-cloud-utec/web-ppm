@@ -40,6 +40,9 @@ export type Sesion = {
   nombre: string;
   rol: "admin" | "pmo" | "pm" | "miembro";
   tenant_id: string;
+  /** Nombre visible de la organizacion. Lo guarda el login desde /tenants:
+   *  tenerlo cableado rompia con cada organizacion nueva. */
+  tenant_nombre?: string;
 };
 
 export function guardarSesion(token: string, sesion: Sesion) {

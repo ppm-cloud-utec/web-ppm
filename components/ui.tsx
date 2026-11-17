@@ -38,23 +38,23 @@ export function Semaforo({ salud, mini = false }: { salud: string; mini?: boolea
 }
 
 const ESTADO_COLOR: Record<string, string> = {
-  propuesto: "bg-slate-100 text-slate-600",
-  aprobado: "bg-blue-50 text-blue-700",
-  en_curso: "bg-indigo-50 text-indigo-700",
-  en_pausa: "bg-amber-50 text-amber-700",
-  cerrado: "bg-emerald-50 text-emerald-700",
-  cancelado: "bg-slate-100 text-slate-400 line-through",
-  pendiente: "bg-slate-100 text-slate-600",
-  en_progreso: "bg-indigo-50 text-indigo-700",
-  completada: "bg-emerald-50 text-emerald-700",
-  bloqueada: "bg-red-50 text-red-700",
+  propuesto: "bg-slate-50 text-slate-600 ring-slate-500/15",
+  aprobado: "bg-blue-50 text-blue-700 ring-blue-600/15",
+  en_curso: "bg-indigo-50 text-indigo-700 ring-indigo-600/15",
+  en_pausa: "bg-amber-50 text-amber-700 ring-amber-600/15",
+  cerrado: "bg-emerald-50 text-emerald-700 ring-emerald-600/15",
+  cancelado: "bg-slate-50 text-slate-400 line-through ring-slate-500/15",
+  pendiente: "bg-slate-50 text-slate-600 ring-slate-500/15",
+  en_progreso: "bg-indigo-50 text-indigo-700 ring-indigo-600/15",
+  completada: "bg-emerald-50 text-emerald-700 ring-emerald-600/15",
+  bloqueada: "bg-red-50 text-red-700 ring-red-600/15",
 };
 
 export function Estado({ estado }: { estado: string }) {
   return (
     <span
-      className={`inline-block whitespace-nowrap rounded px-1.5 py-0.5 text-xs font-medium ${
-        ESTADO_COLOR[estado] ?? "bg-slate-100 text-slate-600"
+      className={`inline-block whitespace-nowrap rounded-md px-2 py-0.5 text-xs font-medium ring-1 ring-inset ${
+        ESTADO_COLOR[estado] ?? "bg-slate-50 text-slate-600 ring-slate-500/15"
       }`}
     >
       {estado.replace(/_/g, " ")}
@@ -255,19 +255,21 @@ export function Tarjeta({
 }) {
   return (
     <div
-      className={`rounded-lg border p-4 ${
-        alerta ? "border-red-200 bg-red-50/40" : "border-slate-200 bg-white"
+      className={`rounded-xl border p-4 shadow-carta transition-shadow hover:shadow-elevada ${
+        alerta ? "border-red-200 bg-red-50/50" : "border-borde bg-superficie"
       }`}
     >
-      <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{titulo}</p>
+      <p className="text-[11px] font-semibold uppercase tracking-wider text-tinta-suave">
+        {titulo}
+      </p>
       <p
-        className={`mt-1.5 font-semibold tabular-nums ${acento ? "text-3xl" : "text-2xl"} ${
-          alerta ? "text-red-700" : "text-slate-900"
-        }`}
+        className={`tabular mt-2 font-semibold tracking-tight ${
+          acento ? "text-[2rem] leading-none" : "text-2xl leading-none"
+        } ${alerta ? "text-rojo" : "text-tinta"}`}
       >
         {valor}
       </p>
-      {detalle && <p className="mt-0.5 text-xs text-slate-500">{detalle}</p>}
+      {detalle && <p className="mt-1.5 text-xs text-tinta-media">{detalle}</p>}
     </div>
   );
 }
@@ -282,17 +284,23 @@ export function Cargando({ que = "datos" }: { que?: string }) {
   return (
     <div className="space-y-2 p-1">
       {[0, 1, 2].map((i) => (
-        <div key={i} className="h-10 animate-pulse rounded-md bg-slate-100" />
+        <div
+          key={i}
+          className="h-10 animate-pulse rounded-lg bg-slate-200/70"
+          // Un escalonado corto da sensacion de carga progresiva en vez de
+          // tres barras latiendo a la vez.
+          style={{ animationDelay: `${i * 120}ms`, opacity: 1 - i * 0.18 }}
+        />
       ))}
-      <p className="pt-1 text-xs text-slate-400">Cargando {que}…</p>
+      <p className="pt-1 text-xs text-tinta-suave">Cargando {que}…</p>
     </div>
   );
 }
 
 export function Error_({ mensaje }: { mensaje: string }) {
   return (
-    <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800">
-      <p className="font-medium">No se pudo cargar</p>
+    <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800 shadow-carta">
+      <p className="font-semibold">No se pudo cargar</p>
       <p className="mt-0.5">{mensaje}</p>
     </div>
   );
@@ -300,8 +308,8 @@ export function Error_({ mensaje }: { mensaje: string }) {
 
 export function Vacio({ mensaje, accion }: { mensaje: string; accion?: React.ReactNode }) {
   return (
-    <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50/50 px-6 py-12 text-center">
-      <p className="text-sm text-slate-500">{mensaje}</p>
+    <div className="rounded-xl border border-dashed border-borde-fuerte bg-superficie/60 px-6 py-14 text-center">
+      <p className="text-sm text-tinta-media">{mensaje}</p>
       {accion && <div className="mt-3">{accion}</div>}
     </div>
   );
@@ -327,9 +335,11 @@ export function Seccion({
         <div className="mb-3 flex items-end justify-between gap-4">
           <div>
             {pregunta && (
-              <h2 className="text-sm font-semibold text-slate-900">{pregunta}</h2>
+              <h2 className="text-[15px] font-semibold tracking-tight text-tinta">
+                {pregunta}
+              </h2>
             )}
-            {titulo && <p className="text-xs text-slate-500">{titulo}</p>}
+            {titulo && <p className="mt-0.5 text-xs text-tinta-media">{titulo}</p>}
           </div>
           {accion}
         </div>
