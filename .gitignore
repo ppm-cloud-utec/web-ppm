@@ -1,6 +1,9 @@
 node_modules/
 .next/
 out/
+
+# Artefacto que se sube a Amplify: se genera en cada despliegue
+web.zip
 build/
 .env
 .env.local
