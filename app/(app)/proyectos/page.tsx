@@ -22,6 +22,20 @@ type Proyecto = {
 
 const ESTADOS = ["", "propuesto", "aprobado", "en_curso", "en_pausa", "cerrado", "cancelado"];
 
+const navBoton =
+  "rounded-lg border border-borde bg-superficie px-3 py-1.5 text-tinta-media " +
+  "transition-colors hover:border-borde-fuerte hover:text-tinta " +
+  "disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-borde";
+
+/** Pastilla de filtro. Activa = se ve activa sin tener que abrirla. */
+function pastilla(activo: boolean) {
+  return `rounded-full border px-3 py-1.5 text-sm transition-colors ${
+    activo
+      ? "border-transparent bg-marca-tenue font-medium text-marca-fuerte"
+      : "border-borde bg-superficie text-tinta-media hover:border-borde-fuerte hover:text-tinta"
+  }`;
+}
+
 export default function Proyectos() {
   const router = useRouter();
   const [proyectos, setProyectos] = useState<Proyecto[] | null>(null);
@@ -118,56 +132,99 @@ export default function Proyectos() {
   ];
 
   const paginas = Math.ceil(total / 25);
+  const nFiltros = [estado, salud, soloRiesgo ? "x" : "", busqueda].filter(Boolean).length;
+
+  function limpiar() {
+    setBusqueda(""); setEstado(""); setSalud(""); setSoloRiesgo(false); setPagina(1);
+  }
 
   return (
     <div className="space-y-5">
-      <header className="flex flex-wrap items-end justify-between gap-3">
-        <div>
+      {/* Jerarquia editorial: el numero es el dato, no una nota al pie.
+          Antes el titulo pesaba mas que la cifra que la gente viene a ver. */}
+      <header className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+        <div className="flex items-baseline gap-3">
           <h1 className="text-2xl font-semibold tracking-tight text-tinta">Proyectos</h1>
-          <p className="mt-0.5 text-sm text-tinta-media">
-            {total.toLocaleString("es-PE")} proyectos en esta organización
+          <span className="text-tinta-suave">·</span>
+          <p className="text-sm text-tinta-media">
+            <span className="tabular text-base font-semibold text-tinta">
+              {total.toLocaleString("es-PE")}
+            </span>{" "}
+            en esta organización
           </p>
         </div>
+        {nFiltros > 0 && (
+          <button
+            onClick={limpiar}
+            className="text-sm text-tinta-media underline decoration-borde-fuerte underline-offset-4 transition-colors hover:text-tinta hover:decoration-tinta"
+          >
+            Quitar {nFiltros === 1 ? "el filtro" : `los ${nFiltros} filtros`}
+          </button>
+        )}
       </header>
 
-      {/* ------------------------------------------------- filtros */}
-      <div className="flex flex-wrap items-center gap-2 rounded-lg border border-borde bg-superficie p-2">
-        <input
-          type="search"
-          value={busqueda}
-          onChange={(e) => setBusqueda(e.target.value)}
-          placeholder="Buscar por nombre, código o portafolio…"
-          className="min-w-[16rem] flex-1 rounded-md border border-borde px-3 py-1.5 text-sm placeholder:text-tinta-suave focus:border-slate-400 focus:outline-none"
-        />
-        <select
-          value={estado}
-          onChange={(e) => { setEstado(e.target.value); setPagina(1); }}
-          className="rounded-md border border-borde px-2.5 py-1.5 text-sm"
-        >
-          {ESTADOS.map((e) => (
-            <option key={e} value={e}>{e ? e.replace("_", " ") : "Todos los estados"}</option>
-          ))}
-        </select>
-        <select
-          value={salud}
-          onChange={(e) => { setSalud(e.target.value); setPagina(1); }}
-          className="rounded-md border border-borde px-2.5 py-1.5 text-sm"
-        >
-          <option value="">Toda la salud</option>
-          <option value="verde">verde</option>
-          <option value="ambar">ámbar</option>
-          <option value="rojo">rojo</option>
-        </select>
-        <button
-          onClick={() => { setSoloRiesgo((v) => !v); setPagina(1); }}
-          className={`rounded-md border px-3 py-1.5 text-sm ${
-            soloRiesgo
-              ? "border-red-300 bg-red-50 font-medium text-red-700"
-              : "border-borde text-tinta-media hover:bg-slate-50"
-          }`}
-        >
-          Solo en riesgo
-        </button>
+      {/* ------------------------------------------------- filtros
+          Antes eran cuatro controles sueltos dentro de una caja gris, que es
+          justo el aspecto de plantilla que hay que evitar. Ahora la busqueda
+          manda y los filtros son pastillas: se ve de un vistazo cuales estan
+          puestos, sin leer el contenido de cada desplegable. */}
+      <div className="space-y-3">
+        <div className="relative">
+          <span
+            aria-hidden
+            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-tinta-suave"
+          >
+            ⌕
+          </span>
+          <input
+            type="search"
+            value={busqueda}
+            onChange={(e) => setBusqueda(e.target.value)}
+            placeholder="Buscar por nombre, código o portafolio en esta página…"
+            className="w-full rounded-xl border border-borde bg-superficie py-2.5 pl-9 pr-3 text-sm shadow-carta transition-colors placeholder:text-tinta-suave hover:border-borde-fuerte focus:border-marca"
+          />
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2">
+          <select
+            value={estado}
+            onChange={(e) => { setEstado(e.target.value); setPagina(1); }}
+            aria-label="Filtrar por estado"
+            className={pastilla(Boolean(estado))}
+          >
+            {ESTADOS.map((e) => (
+              <option key={e} value={e}>{e ? e.replace("_", " ") : "Todos los estados"}</option>
+            ))}
+          </select>
+
+          <select
+            value={salud}
+            onChange={(e) => { setSalud(e.target.value); setPagina(1); }}
+            aria-label="Filtrar por salud"
+            className={pastilla(Boolean(salud))}
+          >
+            <option value="">Toda la salud</option>
+            <option value="verde">verde</option>
+            <option value="ambar">ámbar</option>
+            <option value="rojo">rojo</option>
+          </select>
+
+          <button
+            onClick={() => { setSoloRiesgo((v) => !v); setPagina(1); }}
+            aria-pressed={soloRiesgo}
+            className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm transition-colors ${
+              soloRiesgo
+                ? "border-transparent bg-rojo/10 font-medium text-rojo"
+                : "border-borde bg-superficie text-tinta-media hover:border-borde-fuerte hover:text-tinta"
+            }`}
+          >
+            <span
+              aria-hidden
+              className={`h-1.5 w-1.5 rounded-full ${soloRiesgo ? "bg-estado-critico" : "bg-borde-fuerte"}`}
+            />
+            Solo en riesgo
+          </button>
+        </div>
       </div>
 
       {!proyectos ? (
@@ -176,13 +233,13 @@ export default function Proyectos() {
         <Vacio
           mensaje={
             busqueda
-              ? `Ningún proyecto coincide con "${busqueda}".`
+              ? `Ningún proyecto de esta página coincide con "${busqueda}". La búsqueda afina lo ya cargado; para buscar en los ${total.toLocaleString("es-PE")}, usa los filtros.`
               : "Ningún proyecto con esos filtros."
           }
           accion={
             <button
-              onClick={() => { setBusqueda(""); setEstado(""); setSalud(""); setSoloRiesgo(false); }}
-              className="text-sm text-tinta-media underline"
+              onClick={limpiar}
+              className="text-sm text-tinta-media underline decoration-borde-fuerte underline-offset-4 transition-colors hover:text-tinta"
             >
               Quitar los filtros
             </button>
@@ -190,32 +247,80 @@ export default function Proyectos() {
         />
       ) : (
         <>
-          <Tabla
-            columnas={columnas}
-            filas={visibles}
-            clave={(p) => p.id}
-            ordenInicial={{ col: "prioridad_score", desc: true }}
-            onFila={(p) => router.push(`/proyecto?id=${p.id}`)}
-          />
+          {/* La tabla de 7 columnas no cabe en un telefono: debajo de md se
+              cambia por tarjetas con los mismos datos, no por un scroll
+              horizontal que obliga a arrastrar para leer una fila. */}
+          <div className="aparece hidden md:block">
+            <Tabla
+              columnas={columnas}
+              filas={visibles}
+              clave={(p) => p.id}
+              ordenInicial={{ col: "prioridad_score", desc: true }}
+              onFila={(p) => router.push(`/proyecto?id=${p.id}`)}
+            />
+          </div>
+
+          <ul className="aparece space-y-2 md:hidden">
+            {visibles.map((p) => (
+              <li key={p.id}>
+                <button
+                  onClick={() => router.push(`/proyecto?id=${p.id}`)}
+                  className="w-full rounded-xl border border-borde bg-superficie p-3 text-left shadow-carta transition-shadow hover:shadow-elevada"
+                >
+                  <div className="flex items-start gap-2.5">
+                    <span className="mt-1.5"><Semaforo salud={p.salud} mini /></span>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate font-medium text-tinta">{p.nombre}</p>
+                      <p className="truncate text-xs text-tinta-suave">
+                        {p.codigo} · {p.portafolio}
+                      </p>
+                    </div>
+                    <Estado estado={p.estado} />
+                  </div>
+
+                  <div className="mt-3"><Barra valor={Number(p.avance_pct)} /></div>
+
+                  <div className="mt-2.5 flex items-center justify-between gap-2 text-xs">
+                    <Persona nombre={p.responsable} id={p.responsable_id} />
+                    <span className="tabular text-tinta-media">
+                      {soles(p.presupuesto_estimado)}
+                    </span>
+                  </div>
+                </button>
+              </li>
+            ))}
+          </ul>
 
           {paginas > 1 && (
-            <div className="flex items-center justify-between text-sm">
-              <button
-                onClick={() => setPagina((p) => Math.max(1, p - 1))}
-                disabled={pagina === 1}
-                className="rounded-md border border-borde bg-superficie px-3 py-1.5 disabled:opacity-40"
-              >
-                Anterior
-              </button>
-              <span className="text-tinta-media">Página {pagina} de {paginas}</span>
-              <button
-                onClick={() => setPagina((p) => Math.min(paginas, p + 1))}
-                disabled={pagina >= paginas}
-                className="rounded-md border border-borde bg-superficie px-3 py-1.5 disabled:opacity-40"
-              >
-                Siguiente
-              </button>
-            </div>
+            <nav
+              aria-label="Paginación"
+              className="flex items-center justify-between gap-3 text-sm"
+            >
+              {/* Decir el rango, no solo el numero de pagina: "26–50 de 500"
+                  ubica a la persona; "Pagina 2 de 20" la obliga a calcular. */}
+              <p className="text-tinta-media">
+                <span className="tabular font-medium text-tinta">
+                  {(pagina - 1) * 25 + 1}–{Math.min(pagina * 25, total)}
+                </span>{" "}
+                de {total.toLocaleString("es-PE")}
+              </p>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setPagina((p) => Math.max(1, p - 1))}
+                  disabled={pagina === 1}
+                  className={navBoton}
+                >
+                  Anterior
+                </button>
+                <button
+                  onClick={() => setPagina((p) => Math.min(paginas, p + 1))}
+                  disabled={pagina >= paginas}
+                  className={navBoton}
+                >
+                  Siguiente
+                </button>
+              </div>
+            </nav>
           )}
         </>
       )}

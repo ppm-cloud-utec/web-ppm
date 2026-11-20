@@ -91,16 +91,40 @@ export function Tabla<T extends Record<string, any>>({
             <tr
               key={clave(f)}
               onClick={onFila ? () => onFila(f) : undefined}
-              className={`transition-colors ${
-                onFila ? "cursor-pointer" : ""
+              onKeyDown={
+                onFila
+                  ? (e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        onFila(f);
+                      }
+                    }
+                  : undefined
+              }
+              tabIndex={onFila ? 0 : undefined}
+              role={onFila ? "link" : undefined}
+              className={`group transition-colors ${
+                onFila
+                  ? "cursor-pointer focus-visible:bg-marca-tenue focus-visible:outline-none"
+                  : ""
               } hover:bg-marca-tenue/60`}
             >
-              {columnas.map((c) => (
+              {columnas.map((c, i) => (
                 <td
                   key={c.clave}
-                  className={`px-3 py-2.5 ${c.numerica ? "tabular text-right" : ""}`}
+                  className={`px-3 py-2.5 ${c.numerica ? "tabular text-right" : ""} ${
+                    onFila && i === columnas.length - 1 ? "relative pr-7" : ""
+                  }`}
                 >
                   {c.render(f)}
+                  {onFila && i === columnas.length - 1 && (
+                    <span
+                      aria-hidden
+                      className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-tinta-suave opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100"
+                    >
+                      ›
+                    </span>
+                  )}
                 </td>
               ))}
             </tr>
