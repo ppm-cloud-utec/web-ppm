@@ -17,7 +17,8 @@ import { useEffect, useState } from "react";
 
 import { cerrarSesion, sesion, type Sesion } from "@/lib/api";
 import { MarcaConNombre } from "@/components/marca";
-import { Avatar, Ficha } from "@/components/ui";
+import { MarcaOrganizacion } from "@/components/logos";
+import { Avatar } from "@/components/ui";
 
 const MENU = [
   { href: "/dashboard", texto: "Dashboard", icono: "▦" },
@@ -56,7 +57,13 @@ export default function LayoutApp({ children }: { children: React.ReactNode }) {
 
         {/* Organizacion activa: lo mas visible de la barra */}
         <div className="mx-3 mb-4 flex items-center gap-2.5 rounded-xl bg-white/[0.07] px-3 py-2.5 ring-1 ring-inset ring-white/10">
-          <Ficha nombre={s.tenant_nombre ?? s.tenant_id} tam="lg" />
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white">
+            <MarcaOrganizacion
+              tenantId={s.tenant_id}
+              nombre={s.tenant_nombre ?? s.tenant_id}
+              tam={24}
+            />
+          </span>
           <div className="min-w-0">
             <p className="truncate text-sm font-semibold leading-tight text-white">
               {s.tenant_nombre ?? s.tenant_id}
