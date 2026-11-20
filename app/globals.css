@@ -21,11 +21,25 @@
   /* Azul profundo: serio, no corporativo-genérico. Es el unico color con
      peso de marca; el resto de la interfaz es neutro a proposito para que
      el semaforo de salud (verde/ambar/rojo) nunca compita con el. */
-  /* Azul petroleo, no el indigo de SaaS ni el azul marino corporativo.
-     Es tinta de plano. */
-  --marca: #1c4f6b;
-  --marca-fuerte: #123b52;
-  --marca-tenue: #e7eef1;
+  /* Violeta de la marca. Es el color del primer trazo del logotipo, asi que
+     la interfaz y el simbolo hablan igual. */
+  --marca: #6b4df6;
+  --marca-fuerte: #5436d6;
+  --marca-tenue: #f0edfe;
+
+  /* Colores de identidad: cuadros de inicial de organizaciones, personas y
+     portafolios. Aqui el color acompaña a una letra, no la sustituye, asi
+     que su trabajo es dar vida y agrupar de un vistazo, no codificar un
+     dato. Por eso puede haber muchos; el semaforo de salud sigue siendo el
+     unico color que significa algo por si solo. */
+  --id-1: #6b4df6;
+  --id-2: #2a78d6;
+  --id-3: #1baf7a;
+  --id-4: #eb6834;
+  --id-5: #d55181;
+  --id-6: #0aa2c0;
+  --id-7: #c99a06;
+  --id-8: #7c5cff;
 
   /* ---------------------------------------------------------- datos
      Separados del color de marca a proposito. El azul de marca (#2d4a7c)

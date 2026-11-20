@@ -16,7 +16,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { cerrarSesion, sesion, type Sesion } from "@/lib/api";
-import { Avatar } from "@/components/ui";
+import { MarcaConNombre } from "@/components/marca";
+import { Avatar, Ficha } from "@/components/ui";
 
 const MENU = [
   { href: "/dashboard", texto: "Dashboard", icono: "▦" },
@@ -48,23 +49,20 @@ export default function LayoutApp({ children }: { children: React.ReactNode }) {
       {/* ---------------------------------------------------- lateral */}
       <aside className="flex w-60 shrink-0 flex-col bg-[#15213a] text-slate-300">
         <div className="px-4 py-4">
-          <Link href="/dashboard" className="flex items-center gap-2">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/95 text-sm font-bold text-[#15213a]">
-              P
-            </span>
-            <span className="font-semibold tracking-tight text-white">Portafolio</span>
+          <Link href="/dashboard" className="flex items-center">
+            <MarcaConNombre />
           </Link>
         </div>
 
         {/* Organizacion activa: lo mas visible de la barra */}
-        <div className="mx-3 mb-4 rounded-xl bg-white/[0.07] px-3 py-2.5 ring-1 ring-inset ring-white/10">
-          <p className="text-[11px] font-medium text-slate-400">
-            Organización
-          </p>
-          <p className="mt-1 truncate text-sm font-semibold text-white">
-            {s.tenant_nombre ?? s.tenant_id}
-          </p>
-          <p className="font-mono text-[11px] text-slate-500">{s.tenant_id}</p>
+        <div className="mx-3 mb-4 flex items-center gap-2.5 rounded-xl bg-white/[0.07] px-3 py-2.5 ring-1 ring-inset ring-white/10">
+          <Ficha nombre={s.tenant_nombre ?? s.tenant_id} tam="lg" />
+          <div className="min-w-0">
+            <p className="truncate text-sm font-semibold leading-tight text-white">
+              {s.tenant_nombre ?? s.tenant_id}
+            </p>
+            <p className="truncate font-mono text-[11px] text-slate-400">{s.tenant_id}</p>
+          </div>
         </div>
 
         <nav className="flex-1 space-y-0.5 px-3">
@@ -76,12 +74,12 @@ export default function LayoutApp({ children }: { children: React.ReactNode }) {
                 href={m.href}
                 className={`relative flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors ${
                   activo
-                    ? "bg-white/10 font-medium text-white"
+                    ? "bg-marca font-medium text-white"
                     : "text-slate-400 hover:bg-white/[0.06] hover:text-slate-100"
                 }`}
               >
                 {activo && (
-                  <span className="absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-r bg-white" />
+                  <span className="absolute -left-3 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-r bg-marca" />
                 )}
                 <span className="w-4 text-center text-xs">{m.icono}</span>
                 {m.texto}

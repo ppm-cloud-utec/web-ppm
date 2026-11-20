@@ -7,7 +7,7 @@ import { useCallback, useEffect, useState } from "react";
 import { FalloApi, llamar, pct, soles, USAR_MOCKS } from "@/lib/api";
 import { PORTAFOLIOS } from "@/lib/mock";
 import { Tabla, type Columna } from "@/components/tabla";
-import { Cargando, Error_, Vacio } from "@/components/ui";
+import { Cargando, Error_, Ficha, Vacio } from "@/components/ui";
 
 /**
  * Lo que devuelve GET /portafolios de ms-portafolios. Los nombres salen del
@@ -108,11 +108,14 @@ export default function Portafolios() {
       clave: "nombre", titulo: "Portafolio",
       orden: (p) => p.nombre,
       render: (p) => (
-        <div className="min-w-0">
+        <div className="flex min-w-0 items-center gap-2.5">
+          <Ficha nombre={p.nombre} />
+          <div className="min-w-0">
           <p className="truncate font-medium text-tinta">{p.nombre}</p>
           {p.objetivo_estrategico && (
             <p className="truncate text-xs text-tinta-suave">{p.objetivo_estrategico}</p>
           )}
+          </div>
         </div>
       ),
     },

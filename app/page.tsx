@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 
 import { FalloApi, guardarSesion, llamar, USAR_MOCKS } from "@/lib/api";
 import { TENANTS } from "@/lib/mock";
+import { Marca } from "@/components/marca";
 
 type Tenant = { tenant_id: string; nombre: string; rubro: string };
 
@@ -91,9 +92,7 @@ export default function Login() {
       />
       <div className="relative w-full max-w-sm">
         <div className="mb-8 text-center">
-          <span className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-marca text-lg font-bold text-white shadow-elevada">
-            P
-          </span>
+          <span className="mx-auto mb-3 flex w-fit"><Marca tam={44} /></span>
           <h1 className="text-2xl font-semibold tracking-tight text-tinta">Portafolio</h1>
           <p className="mt-1 text-sm text-tinta-media">
             Gestión de portafolios, proyectos, recursos y presupuestos

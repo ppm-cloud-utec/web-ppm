@@ -66,12 +66,27 @@ export function Estado({ estado }: { estado: string }) {
 
 /* ---------------------------------------------------------------- avatar */
 
+// Colores de identidad, en saturado y con texto blanco. El pastel anterior
+// desaparecia contra el papel; estos dan a la pantalla la vida que tiene un
+// tablero lleno de gente y carteras.
 const COLORES = [
-  "bg-rose-100 text-rose-700", "bg-orange-100 text-orange-700",
-  "bg-amber-100 text-amber-700", "bg-emerald-100 text-emerald-700",
-  "bg-teal-100 text-teal-700", "bg-sky-100 text-sky-700",
-  "bg-indigo-100 text-indigo-700", "bg-violet-100 text-violet-700",
+  "var(--id-1)", "var(--id-2)", "var(--id-3)", "var(--id-4)",
+  "var(--id-5)", "var(--id-6)", "var(--id-7)", "var(--id-8)",
 ];
+
+/**
+ * Mismo nombre -> siempre el mismo color, en toda la aplicacion.
+ *
+ * djb2 y no una suma de codigos: sumar reparte fatal, porque dos nombres
+ * parecidos caen en el mismo resto y dos fichas contiguas salen del mismo
+ * tono. Con djb2 la posicion de cada letra cuenta.
+ */
+export function colorDe(semillaTexto?: string | null) {
+  const t = (semillaTexto || "x").toString();
+  let h = 5381;
+  for (let i = 0; i < t.length; i++) h = ((h << 5) + h + t.charCodeAt(i)) >>> 0;
+  return COLORES[h % COLORES.length];
+}
 
 /**
  * Avatar con iniciales. El color se deriva del identificador, no es aleatorio:
@@ -91,18 +106,43 @@ export function Avatar({
     ? texto.split(/\s+/).slice(0, 2).map((p) => p[0]).join("").toUpperCase()
     : "··";
 
-  const semilla = (id || texto || "x")
-    .split("")
-    .reduce((a, c) => a + c.charCodeAt(0), 0);
-  const color = texto ? COLORES[semilla % COLORES.length] : "bg-slate-100 text-tinta-suave";
   const medida = tam === "sm" ? "h-5 w-5 text-[10px]" : "h-7 w-7 text-xs";
 
   return (
     <span
-      className={`inline-flex shrink-0 items-center justify-center rounded-full font-semibold ${medida} ${color}`}
+      className={`inline-flex shrink-0 items-center justify-center rounded-full font-semibold text-white ${medida}`}
+      style={{ background: texto ? colorDe(id || texto) : "var(--borde-fuerte)" }}
       title={texto || "sin responsable"}
     >
       {iniciales}
+    </span>
+  );
+}
+
+/**
+ * Cuadro de inicial de una organizacion o una cartera. Cuadrado, no redondo:
+ * las personas son circulos y las cosas son cuadrados, asi se distinguen sin
+ * leer.
+ */
+export function Ficha({
+  nombre,
+  tam = "md",
+}: {
+  nombre: string;
+  tam?: "sm" | "md" | "lg";
+}) {
+  const medidas = {
+    sm: "h-5 w-5 rounded text-[10px]",
+    md: "h-7 w-7 rounded-md text-xs",
+    lg: "h-10 w-10 rounded-lg text-base",
+  };
+  return (
+    <span
+      className={`inline-flex shrink-0 items-center justify-center font-semibold text-white ${medidas[tam]}`}
+      style={{ background: colorDe(nombre) }}
+      aria-hidden
+    >
+      {nombre.trim().charAt(0).toUpperCase()}
     </span>
   );
 }

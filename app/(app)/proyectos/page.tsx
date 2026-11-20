@@ -9,7 +9,7 @@ import { FalloApi, llamar, soles, USAR_MOCKS } from "@/lib/api";
 import { PROYECTOS } from "@/lib/mock";
 import { Tabla, type Columna } from "@/components/tabla";
 import {
-  Barra, Cargando, Error_, Estado, Fecha, Persona, Semaforo, Vacio,
+  Barra, Cargando, Error_, Estado, Fecha, Ficha, Persona, Semaforo, Vacio,
 } from "@/components/ui";
 
 type Proyecto = {
@@ -91,7 +91,10 @@ export default function Proyectos() {
             <p className="truncate font-medium text-tinta">{p.nombre}</p>
             <p className="truncate text-xs">
               <span className="font-mono text-tinta-suave">{p.codigo}</span>
-              <span className="ml-2 text-tinta-suave">{p.portafolio}</span>
+              <span className="ml-2 inline-flex items-center gap-1 text-tinta-suave">
+                <Ficha nombre={p.portafolio} tam="sm" />
+                {p.portafolio}
+              </span>
             </p>
           </div>
         </div>
