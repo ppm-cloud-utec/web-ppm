@@ -109,9 +109,9 @@ export default function Portafolios() {
       orden: (p) => p.nombre,
       render: (p) => (
         <div className="min-w-0">
-          <p className="truncate font-medium text-slate-900">{p.nombre}</p>
+          <p className="truncate font-medium text-tinta">{p.nombre}</p>
           {p.objetivo_estrategico && (
-            <p className="truncate text-xs text-slate-400">{p.objetivo_estrategico}</p>
+            <p className="truncate text-xs text-tinta-suave">{p.objetivo_estrategico}</p>
           )}
         </div>
       ),
@@ -120,7 +120,7 @@ export default function Portafolios() {
       clave: "proyectos", titulo: "Proyectos", numerica: true, ancho: "6rem",
       orden: (p) => Number(p.proyectos ?? 0),
       render: (p) => (
-        <span className="text-slate-700">
+        <span className="text-tinta-media">
           {p.proyectos ?? "—"}
           {Number(p.en_riesgo ?? 0) > 0 && (
             <span className="ml-1 text-xs text-red-600">({p.en_riesgo} en riesgo)</span>
@@ -131,17 +131,17 @@ export default function Portafolios() {
     {
       clave: "avance_promedio", titulo: "Avance", numerica: true, ancho: "6rem",
       orden: (p) => Number(p.avance_promedio ?? 0),
-      render: (p) => <span className="text-slate-700">{pct(p.avance_promedio)}</span>,
+      render: (p) => <span className="text-tinta-media">{pct(p.avance_promedio)}</span>,
     },
     {
       clave: "comprometido", titulo: "Comprometido", numerica: true, ancho: "9rem",
       orden: (p) => Number(p.comprometido ?? 0),
-      render: (p) => <span className="text-slate-700">{soles(p.comprometido)}</span>,
+      render: (p) => <span className="text-tinta-media">{soles(p.comprometido)}</span>,
     },
     {
       clave: "presupuesto_disponible", titulo: "Disponible", numerica: true, ancho: "9rem",
       orden: (p) => Number(p.presupuesto_disponible ?? 0),
-      render: (p) => <span className="text-slate-700">{soles(p.presupuesto_disponible)}</span>,
+      render: (p) => <span className="text-tinta-media">{soles(p.presupuesto_disponible)}</span>,
     },
   ];
 
@@ -149,14 +149,14 @@ export default function Portafolios() {
     <div className="space-y-5">
       <header className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Portafolios</h1>
-          <p className="mt-0.5 text-sm text-slate-500">
+          <h1 className="text-2xl font-semibold tracking-tight text-tinta">Portafolios</h1>
+          <p className="mt-0.5 text-sm text-tinta-media">
             {lista ? `${lista.length} portafolios en esta organización` : "Cargando…"}
           </p>
         </div>
         <button
           onClick={() => setAbierto((v) => !v)}
-          className="rounded-md bg-slate-900 px-3 py-1.5 text-sm font-medium text-white"
+          className="rounded-lg bg-marca px-3 py-1.5 text-sm font-semibold text-white shadow-carta transition-colors hover:bg-marca-fuerte"
         >
           {abierto ? "Cancelar" : "Nuevo portafolio"}
         </button>
@@ -171,19 +171,19 @@ export default function Portafolios() {
       {abierto && (
         <form
           onSubmit={crear}
-          className="space-y-3 rounded-lg border border-slate-200 bg-white p-4"
+          className="space-y-3 rounded-lg border border-borde bg-superficie p-4"
         >
           <div>
-            <label className="text-xs font-medium uppercase text-slate-500">Nombre</label>
+            <label className="text-xs font-medium uppercase text-tinta-media">Nombre</label>
             <input
               required
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
-              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-1.5 text-sm focus:border-slate-400 focus:outline-none"
+              className="mt-1 w-full rounded-md border border-borde px-3 py-1.5 text-sm focus:border-slate-400 focus:outline-none"
             />
           </div>
           <div>
-            <label className="text-xs font-medium uppercase text-slate-500">
+            <label className="text-xs font-medium uppercase text-tinta-media">
               Objetivo estratégico
             </label>
             <input
@@ -191,36 +191,36 @@ export default function Portafolios() {
               value={objetivo}
               onChange={(e) => setObjetivo(e.target.value)}
               placeholder="Ej. Ampliar cobertura en el cono norte"
-              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-1.5 text-sm focus:border-slate-400 focus:outline-none"
+              className="mt-1 w-full rounded-md border border-borde px-3 py-1.5 text-sm focus:border-slate-400 focus:outline-none"
             />
           </div>
           <div>
-            <label className="text-xs font-medium uppercase text-slate-500">
+            <label className="text-xs font-medium uppercase text-tinta-media">
               Presupuesto disponible (opcional)
             </label>
             <input
               type="number" min="0" step="0.01"
               value={disponible}
               onChange={(e) => setDisponible(e.target.value)}
-              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-1.5 text-sm focus:border-slate-400 focus:outline-none"
+              className="mt-1 w-full rounded-md border border-borde px-3 py-1.5 text-sm focus:border-slate-400 focus:outline-none"
             />
           </div>
           <div>
-            <label className="text-xs font-medium uppercase text-slate-500">
+            <label className="text-xs font-medium uppercase text-tinta-media">
               Descripción (opcional)
             </label>
             <textarea
               value={descripcion}
               onChange={(e) => setDescripcion(e.target.value)}
               rows={2}
-              className="mt-1 w-full rounded-md border border-slate-200 px-3 py-1.5 text-sm focus:border-slate-400 focus:outline-none"
+              className="mt-1 w-full rounded-md border border-borde px-3 py-1.5 text-sm focus:border-slate-400 focus:outline-none"
             />
           </div>
           {errorForm && <p className="text-sm text-red-700">{errorForm}</p>}
           <button
             type="submit"
             disabled={guardando || !nombre.trim() || !objetivo.trim()}
-            className="rounded-md bg-slate-900 px-3 py-1.5 text-sm font-medium text-white disabled:opacity-50"
+            className="rounded-lg bg-marca px-3 py-1.5 text-sm font-semibold text-white shadow-carta transition-colors hover:bg-marca-fuerte disabled:cursor-not-allowed disabled:opacity-50"
           >
             {guardando ? "Creando…" : "Crear portafolio"}
           </button>

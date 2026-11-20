@@ -57,13 +57,13 @@ export function RegistrarGasto({
   }
 
   const campo =
-    "mt-1 w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm focus:border-slate-400 focus:outline-none";
-  const etiqueta = "text-[10px] font-medium uppercase text-slate-500";
+    "mt-1 w-full rounded-md border border-borde px-2.5 py-1.5 text-sm focus:border-slate-400 focus:outline-none";
+  const etiqueta = "text-[10px] font-medium uppercase text-tinta-media";
 
   return (
     <form
       onSubmit={enviar}
-      className="space-y-3 rounded-lg border border-slate-200 bg-white p-4"
+      className="space-y-3 rounded-lg border border-borde bg-superficie p-4"
     >
       <div>
         <label className={etiqueta}>Partida</label>
@@ -96,7 +96,7 @@ export function RegistrarGasto({
       <button
         type="submit"
         disabled={enviando || !partidaId || !monto || !concepto.trim()}
-        className="w-full rounded-md bg-slate-900 px-3 py-1.5 text-sm font-medium text-white disabled:opacity-50"
+        className="w-full rounded-lg bg-marca px-3 py-1.5 text-sm font-semibold text-white shadow-carta transition-colors hover:bg-marca-fuerte disabled:cursor-not-allowed disabled:opacity-50"
       >
         {enviando ? "Registrando…" : "Registrar gasto"}
       </button>

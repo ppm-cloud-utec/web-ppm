@@ -74,8 +74,8 @@ export default function Proyectos() {
         <div className="flex items-center gap-2.5">
           <Semaforo salud={p.salud} mini />
           <div className="min-w-0">
-            <p className="truncate font-medium text-slate-900">{p.nombre}</p>
-            <p className="truncate text-xs text-slate-400">
+            <p className="truncate font-medium text-tinta">{p.nombre}</p>
+            <p className="truncate text-xs text-tinta-suave">
               {p.codigo} · {p.portafolio}
             </p>
           </div>
@@ -95,7 +95,7 @@ export default function Proyectos() {
       clave: "prioridad_score", titulo: "Prioridad", numerica: true, ancho: "6rem",
       orden: (p) => Number(p.prioridad_score),
       render: (p) => (
-        <span className="font-medium text-slate-700">
+        <span className="font-medium text-tinta-media">
           {Number(p.prioridad_score).toFixed(1)}
         </span>
       ),
@@ -113,7 +113,7 @@ export default function Proyectos() {
     {
       clave: "presupuesto_estimado", titulo: "Presupuesto", numerica: true, ancho: "8rem",
       orden: (p) => Number(p.presupuesto_estimado),
-      render: (p) => <span className="text-slate-700">{soles(p.presupuesto_estimado)}</span>,
+      render: (p) => <span className="text-tinta-media">{soles(p.presupuesto_estimado)}</span>,
     },
   ];
 
@@ -123,26 +123,26 @@ export default function Proyectos() {
     <div className="space-y-5">
       <header className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Proyectos</h1>
-          <p className="mt-0.5 text-sm text-slate-500">
+          <h1 className="text-2xl font-semibold tracking-tight text-tinta">Proyectos</h1>
+          <p className="mt-0.5 text-sm text-tinta-media">
             {total.toLocaleString("es-PE")} proyectos en esta organización
           </p>
         </div>
       </header>
 
       {/* ------------------------------------------------- filtros */}
-      <div className="flex flex-wrap items-center gap-2 rounded-lg border border-slate-200 bg-white p-2">
+      <div className="flex flex-wrap items-center gap-2 rounded-lg border border-borde bg-superficie p-2">
         <input
           type="search"
           value={busqueda}
           onChange={(e) => setBusqueda(e.target.value)}
           placeholder="Buscar por nombre, código o portafolio…"
-          className="min-w-[16rem] flex-1 rounded-md border border-slate-200 px-3 py-1.5 text-sm placeholder:text-slate-400 focus:border-slate-400 focus:outline-none"
+          className="min-w-[16rem] flex-1 rounded-md border border-borde px-3 py-1.5 text-sm placeholder:text-tinta-suave focus:border-slate-400 focus:outline-none"
         />
         <select
           value={estado}
           onChange={(e) => { setEstado(e.target.value); setPagina(1); }}
-          className="rounded-md border border-slate-200 px-2.5 py-1.5 text-sm"
+          className="rounded-md border border-borde px-2.5 py-1.5 text-sm"
         >
           {ESTADOS.map((e) => (
             <option key={e} value={e}>{e ? e.replace("_", " ") : "Todos los estados"}</option>
@@ -151,7 +151,7 @@ export default function Proyectos() {
         <select
           value={salud}
           onChange={(e) => { setSalud(e.target.value); setPagina(1); }}
-          className="rounded-md border border-slate-200 px-2.5 py-1.5 text-sm"
+          className="rounded-md border border-borde px-2.5 py-1.5 text-sm"
         >
           <option value="">Toda la salud</option>
           <option value="verde">verde</option>
@@ -163,7 +163,7 @@ export default function Proyectos() {
           className={`rounded-md border px-3 py-1.5 text-sm ${
             soloRiesgo
               ? "border-red-300 bg-red-50 font-medium text-red-700"
-              : "border-slate-200 text-slate-600 hover:bg-slate-50"
+              : "border-borde text-tinta-media hover:bg-slate-50"
           }`}
         >
           Solo en riesgo
@@ -182,7 +182,7 @@ export default function Proyectos() {
           accion={
             <button
               onClick={() => { setBusqueda(""); setEstado(""); setSalud(""); setSoloRiesgo(false); }}
-              className="text-sm text-slate-600 underline"
+              className="text-sm text-tinta-media underline"
             >
               Quitar los filtros
             </button>
@@ -203,15 +203,15 @@ export default function Proyectos() {
               <button
                 onClick={() => setPagina((p) => Math.max(1, p - 1))}
                 disabled={pagina === 1}
-                className="rounded-md border border-slate-200 bg-white px-3 py-1.5 disabled:opacity-40"
+                className="rounded-md border border-borde bg-superficie px-3 py-1.5 disabled:opacity-40"
               >
                 Anterior
               </button>
-              <span className="text-slate-500">Página {pagina} de {paginas}</span>
+              <span className="text-tinta-media">Página {pagina} de {paginas}</span>
               <button
                 onClick={() => setPagina((p) => Math.min(paginas, p + 1))}
                 disabled={pagina >= paginas}
-                className="rounded-md border border-slate-200 bg-white px-3 py-1.5 disabled:opacity-40"
+                className="rounded-md border border-borde bg-superficie px-3 py-1.5 disabled:opacity-40"
               >
                 Siguiente
               </button>

@@ -11,10 +11,12 @@ export function Semaforo({ salud, mini = false }: { salud: string; mini?: boolea
     ambar: "bg-amber-50 text-amber-700 ring-amber-600/20",
     rojo: "bg-red-50 text-red-700 ring-red-600/20",
   };
+  // Rellenos verificados con el validador de paleta: el par ambar/rojo
+  // pasa de 4.9 a 24.4 de separacion en deuteranopia.
   const punto: Record<string, string> = {
-    verde: "bg-emerald-500",
-    ambar: "bg-amber-500",
-    rojo: "bg-red-500",
+    verde: "bg-estado-bien",
+    ambar: "bg-estado-alerta",
+    rojo: "bg-estado-critico",
   };
 
   if (mini) {
@@ -28,7 +30,7 @@ export function Semaforo({ salud, mini = false }: { salud: string; mini?: boolea
   return (
     <span
       className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium ring-1 ring-inset ${
-        estilos[salud] ?? "bg-slate-50 text-slate-600 ring-slate-500/20"
+        estilos[salud] ?? "bg-slate-50 text-tinta-media ring-slate-500/20"
       }`}
     >
       <span className={`h-1.5 w-1.5 rounded-full ${punto[salud] ?? "bg-slate-400"}`} />
@@ -38,13 +40,13 @@ export function Semaforo({ salud, mini = false }: { salud: string; mini?: boolea
 }
 
 const ESTADO_COLOR: Record<string, string> = {
-  propuesto: "bg-slate-50 text-slate-600 ring-slate-500/15",
+  propuesto: "bg-slate-50 text-tinta-media ring-slate-500/15",
   aprobado: "bg-blue-50 text-blue-700 ring-blue-600/15",
   en_curso: "bg-indigo-50 text-indigo-700 ring-indigo-600/15",
   en_pausa: "bg-amber-50 text-amber-700 ring-amber-600/15",
   cerrado: "bg-emerald-50 text-emerald-700 ring-emerald-600/15",
-  cancelado: "bg-slate-50 text-slate-400 line-through ring-slate-500/15",
-  pendiente: "bg-slate-50 text-slate-600 ring-slate-500/15",
+  cancelado: "bg-slate-50 text-tinta-suave line-through ring-slate-500/15",
+  pendiente: "bg-slate-50 text-tinta-media ring-slate-500/15",
   en_progreso: "bg-indigo-50 text-indigo-700 ring-indigo-600/15",
   completada: "bg-emerald-50 text-emerald-700 ring-emerald-600/15",
   bloqueada: "bg-red-50 text-red-700 ring-red-600/15",
@@ -54,7 +56,7 @@ export function Estado({ estado }: { estado: string }) {
   return (
     <span
       className={`inline-block whitespace-nowrap rounded-md px-2 py-0.5 text-xs font-medium ring-1 ring-inset ${
-        ESTADO_COLOR[estado] ?? "bg-slate-50 text-slate-600 ring-slate-500/15"
+        ESTADO_COLOR[estado] ?? "bg-slate-50 text-tinta-media ring-slate-500/15"
       }`}
     >
       {estado.replace(/_/g, " ")}
@@ -92,7 +94,7 @@ export function Avatar({
   const semilla = (id || texto || "x")
     .split("")
     .reduce((a, c) => a + c.charCodeAt(0), 0);
-  const color = texto ? COLORES[semilla % COLORES.length] : "bg-slate-100 text-slate-400";
+  const color = texto ? COLORES[semilla % COLORES.length] : "bg-slate-100 text-tinta-suave";
   const medida = tam === "sm" ? "h-5 w-5 text-[10px]" : "h-7 w-7 text-xs";
 
   return (
@@ -118,8 +120,8 @@ export function Persona({
     <div className="flex items-center gap-2">
       <Avatar nombre={nombre} id={id} />
       <div className="min-w-0">
-        <p className="truncate text-sm text-slate-900">{nombre || "Sin asignar"}</p>
-        {detalle && <p className="truncate text-xs text-slate-500">{detalle}</p>}
+        <p className="truncate text-sm text-tinta">{nombre || "Sin asignar"}</p>
+        {detalle && <p className="truncate text-xs text-tinta-media">{detalle}</p>}
       </div>
     </div>
   );
@@ -133,10 +135,10 @@ export function Persona({
  * no el dia concreto.
  */
 export function Fecha({ valor, vence = false }: { valor?: string | null; vence?: boolean }) {
-  if (!valor) return <span className="text-slate-400">—</span>;
+  if (!valor) return <span className="text-tinta-suave">—</span>;
 
   const d = new Date(valor);
-  if (Number.isNaN(d.getTime())) return <span className="text-slate-400">—</span>;
+  if (Number.isNaN(d.getTime())) return <span className="text-tinta-suave">—</span>;
 
   const dias = Math.round((d.getTime() - Date.now()) / 86_400_000);
   const abs = Math.abs(dias);
@@ -152,7 +154,7 @@ export function Fecha({ valor, vence = false }: { valor?: string | null; vence?:
 
   return (
     <span
-      className={atrasado ? "font-medium text-red-600" : "text-slate-600"}
+      className={atrasado ? "font-medium text-red-600" : "text-tinta-media"}
       title={d.toLocaleDateString("es-PE", { dateStyle: "long" })}
     >
       {texto}
@@ -177,21 +179,33 @@ export function Barra({
   etiqueta?: boolean;
 }) {
   const v = Math.min(Math.max(valor, 0), 100);
-  let color = "bg-emerald-500";
+  let color = "bg-estado-bien";
+  let estado = "en rango";
   if (invertido) {
-    if (valor >= umbralRojo) color = "bg-red-500";
-    else if (valor >= umbralAmbar) color = "bg-amber-500";
+    if (valor >= umbralRojo) { color = "bg-estado-critico"; estado = "excedido"; }
+    else if (valor >= umbralAmbar) { color = "bg-estado-alerta"; estado = "cerca del limite"; }
   } else if (valor < 40) {
-    color = "bg-amber-500";
+    color = "bg-estado-alerta";
+    estado = "avance bajo";
   }
 
   return (
     <div className="flex items-center gap-2">
-      <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-150 bg-slate-200">
+      {/* role+aria: con etiqueta={false} el color seria el unico canal, y
+          quien no lo distingue se queda sin el dato. */}
+      <div
+        role="meter"
+        aria-valuenow={Math.round(v)}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-label={`${Math.round(valor)}% · ${estado}`}
+        title={`${Math.round(valor)}% · ${estado}`}
+        className="h-1.5 w-full overflow-hidden rounded-full bg-slate-200"
+      >
         <div className={`h-full rounded-full ${color} transition-all`} style={{ width: `${v}%` }} />
       </div>
       {etiqueta && (
-        <span className="w-11 shrink-0 text-right text-xs tabular-nums text-slate-500">
+        <span className="w-11 shrink-0 text-right text-xs tabular-nums text-tinta-media">
           {Math.round(valor)}%
         </span>
       )}
@@ -218,21 +232,32 @@ export function BarraPresupuesto({
     <div>
       <div className="relative h-2 w-full overflow-hidden rounded-full bg-slate-200">
         <div
-          className={`h-full ${p >= 90 ? "bg-amber-500" : "bg-emerald-500"}`}
+          className={`h-full ${p >= 90 ? "bg-estado-alerta" : "bg-estado-bien"}`}
           style={{ width: `${dentro}%` }}
         />
         {exceso > 0 && (
           <div
-            className="absolute inset-y-0 bg-red-500"
+            className="absolute inset-y-0 bg-estado-critico"
             style={{ left: `${Math.max(0, 100 - Math.min(exceso, 100))}%`, width: `${Math.min(exceso, 100)}%` }}
           />
         )}
       </div>
       <div className="mt-1 flex justify-between text-xs tabular-nums">
-        <span className={p >= 90 ? "font-medium text-red-600" : "text-slate-500"}>
+        {/* La tinta sigue al relleno: antes la barra se ponia ambar al 90% y
+            el texto rojo a la vez, dando dos estados distintos para un solo
+            hecho. */}
+        <span
+          className={
+            exceso > 0
+              ? "font-semibold text-rojo"
+              : p >= 90
+                ? "font-medium text-ambar"
+                : "text-tinta-media"
+          }
+        >
           {soles(gastado)}
         </span>
-        <span className="text-slate-400">de {soles(aprobado)}</span>
+        <span className="text-tinta-suave">de {soles(aprobado)}</span>
       </div>
     </div>
   );

@@ -15,6 +15,8 @@ import {
   ResponsiveContainer, Tooltip, XAxis, YAxis,
 } from "recharts";
 
+import { CURSOR, EJE, REJILLA, Tooltip_ } from "@/components/grafico";
+
 import { FalloApi, llamar, pct, soles, USAR_MOCKS } from "@/lib/api";
 import { KPIS, PROYECTOS, SERIE } from "@/lib/mock";
 import {
@@ -55,10 +57,10 @@ export default function Dashboard() {
   return (
     <div className="space-y-8">
       <header>
-        <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
+        <h1 className="text-2xl font-semibold tracking-tight text-tinta">
           Dashboard ejecutivo
         </h1>
-        <p className="mt-0.5 text-sm text-slate-500">
+        <p className="mt-0.5 text-sm text-tinta-media">
           {kpis.proyectos_creados.toLocaleString("es-PE")} proyectos ·{" "}
           {kpis.eventos_procesados.toLocaleString("es-PE")} eventos procesados
         </p>
@@ -66,25 +68,25 @@ export default function Dashboard() {
 
       {/* ---------------------------------------------- PREGUNTA 1 */}
       <Seccion pregunta="¿En qué estamos gastando y cuánto queda?">
-        <div className="rounded-xl border border-slate-200 bg-white p-5">
+        <div className="rounded-xl border border-borde bg-superficie p-5">
           <div className="flex flex-wrap items-end gap-x-10 gap-y-4">
             <div>
-              <p className="text-xs uppercase tracking-wide text-slate-500">Saldo disponible</p>
-              <p className="mt-1 text-4xl font-semibold tabular-nums text-slate-900">
+              <p className="text-xs uppercase tracking-wide text-tinta-media">Saldo disponible</p>
+              <p className="mt-1 text-4xl font-semibold tabular-nums text-tinta">
                 {soles(saldo)}
               </p>
             </div>
             <div className="min-w-[14rem] flex-1">
               <div className="mb-1.5 flex justify-between text-xs">
-                <span className="text-slate-600">
+                <span className="text-tinta-media">
                   Ejecutado <span className="font-medium">{pct(kpis.ejecucion_global_pct)}</span>
                 </span>
-                <span className="tabular-nums text-slate-400">
+                <span className="tabular-nums text-tinta-suave">
                   {soles(kpis.monto_gastado)} de {soles(kpis.presupuesto_comprometido)}
                 </span>
               </div>
               <Barra valor={kpis.ejecucion_global_pct} invertido etiqueta={false} />
-              <p className="mt-1.5 text-xs text-slate-500">
+              <p className="mt-1.5 text-xs text-tinta-media">
                 {kpis.gastos.toLocaleString("es-PE")} gastos registrados
               </p>
             </div>
@@ -93,15 +95,15 @@ export default function Dashboard() {
                 kpis.presupuestos_excedidos > 0 ? "bg-red-50" : "bg-slate-50"
               }`}
             >
-              <p className="text-xs uppercase tracking-wide text-slate-500">Excedidos</p>
+              <p className="text-xs uppercase tracking-wide text-tinta-media">Excedidos</p>
               <p
                 className={`text-2xl font-semibold tabular-nums ${
-                  kpis.presupuestos_excedidos > 0 ? "text-red-700" : "text-slate-900"
+                  kpis.presupuestos_excedidos > 0 ? "text-red-700" : "text-tinta"
                 }`}
               >
                 {kpis.presupuestos_excedidos}
               </p>
-              <p className="text-xs text-slate-500">cruzaron el 90%</p>
+              <p className="text-xs text-tinta-media">cruzaron el 90%</p>
             </div>
           </div>
           {ejecucionAlta && (
@@ -118,7 +120,7 @@ export default function Dashboard() {
         <Seccion
           pregunta="¿Quién está sobrecargado?"
           accion={
-            <Link href="/carga" className="text-xs text-slate-500 underline hover:text-slate-900">
+            <Link href="/carga" className="text-xs text-tinta-media underline hover:text-tinta">
               Ver el equipo
             </Link>
           }
@@ -140,12 +142,12 @@ export default function Dashboard() {
         </Seccion>
 
         <Seccion pregunta="¿Cómo va la ejecución?">
-          <div className="rounded-lg border border-slate-200 bg-white p-4">
+          <div className="rounded-xl border border-borde bg-superficie p-4 shadow-carta">
             <div className="flex items-baseline justify-between">
-              <p className="text-3xl font-semibold tabular-nums text-slate-900">
+              <p className="text-3xl font-semibold tabular-nums text-tinta">
                 {pct(kpis.avance_global_pct)}
               </p>
-              <p className="text-xs tabular-nums text-slate-500">
+              <p className="text-xs tabular-nums text-tinta-media">
                 {kpis.tareas_completadas.toLocaleString("es-PE")} de{" "}
                 {kpis.tareas_creadas.toLocaleString("es-PE")} tareas
               </p>
@@ -153,7 +155,7 @@ export default function Dashboard() {
             <div className="mt-3">
               <Barra valor={kpis.avance_global_pct} etiqueta={false} />
             </div>
-            <p className="mt-2 text-xs text-slate-400">
+            <p className="mt-2 text-xs text-tinta-suave">
               Lo recalculan los eventos <code>tarea.completada</code>, nadie lo reporta a mano.
             </p>
           </div>
@@ -165,7 +167,7 @@ export default function Dashboard() {
         pregunta="¿Qué proyecto se va a caer?"
         titulo={`${riesgo.length} proyectos en ámbar o rojo`}
         accion={
-          <Link href="/proyectos?en_riesgo=true" className="text-xs text-slate-500 underline hover:text-slate-900">
+          <Link href="/proyectos?en_riesgo=true" className="text-xs text-tinta-media underline hover:text-tinta">
             Ver todos
           </Link>
         }
@@ -175,7 +177,7 @@ export default function Dashboard() {
             Ningún proyecto en riesgo ahora mismo.
           </div>
         ) : (
-          <div className="divide-y divide-slate-100 overflow-hidden rounded-lg border border-slate-200 bg-white">
+          <div className="divide-y divide-slate-100 overflow-hidden rounded-lg border border-borde bg-superficie">
             {riesgo.slice(0, 6).map((p) => (
               <Link
                 key={p.id}
@@ -184,8 +186,8 @@ export default function Dashboard() {
               >
                 <Semaforo salud={p.salud} mini />
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-medium text-slate-900">{p.nombre}</p>
-                  <p className="text-xs text-slate-400">{p.codigo}</p>
+                  <p className="truncate text-sm font-medium text-tinta">{p.nombre}</p>
+                  <p className="text-xs text-tinta-suave">{p.codigo}</p>
                 </div>
                 <div className="w-32 shrink-0">
                   <Barra valor={Number(p.avance_pct)} />
@@ -193,7 +195,7 @@ export default function Dashboard() {
                 <div className="hidden w-24 shrink-0 text-right sm:block">
                   <Fecha valor={p.fecha_fin_estimada} vence />
                 </div>
-                <div className="w-28 shrink-0 text-right text-sm tabular-nums text-slate-600">
+                <div className="w-28 shrink-0 text-right text-sm tabular-nums text-tinta-media">
                   {soles(p.presupuesto_estimado)}
                 </div>
               </Link>
@@ -206,37 +208,46 @@ export default function Dashboard() {
       {serie.length > 0 && (
         <Seccion pregunta="¿Cómo venimos en el tiempo?">
           <div className="grid gap-4 lg:grid-cols-2">
-            <div className="rounded-lg border border-slate-200 bg-white p-4">
-              <p className="mb-3 text-xs font-medium uppercase tracking-wide text-slate-500">
+            <div className="rounded-xl border border-borde bg-superficie p-4 shadow-carta">
+              <p className="mb-3 text-[11px] font-semibold uppercase tracking-wider text-tinta-suave">
                 Tareas completadas por mes
               </p>
               <ResponsiveContainer width="100%" height={200}>
                 <BarChart data={serie} margin={{ top: 4, right: 4, left: -16, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="2 4" stroke="#e2e8f0" vertical={false} />
-                  <XAxis dataKey="periodo" fontSize={11} tickLine={false} axisLine={false} stroke="#94a3b8" />
-                  <YAxis fontSize={11} tickLine={false} axisLine={false} stroke="#94a3b8" />
-                  <Tooltip cursor={{ fill: "#f1f5f9" }} />
-                  <Bar dataKey="tareas_completadas" fill="#4f46e5" radius={[3, 3, 0, 0]} name="Completadas" />
+                  <CartesianGrid {...REJILLA} />
+                  <XAxis dataKey="periodo" {...EJE} />
+                  <YAxis {...EJE} />
+                  <Tooltip cursor={CURSOR} content={<Tooltip_ />} />
+                  {/* Extremo redondeado solo arriba: abajo la barra tiene que
+                      apoyar en la linea base o la longitud se lee mal. */}
+                  <Bar
+                    dataKey="tareas_completadas"
+                    fill="var(--dato)"
+                    radius={[4, 4, 0, 0]}
+                    name="Completadas"
+                  />
                 </BarChart>
               </ResponsiveContainer>
             </div>
 
-            <div className="rounded-lg border border-slate-200 bg-white p-4">
-              <p className="mb-3 text-xs font-medium uppercase tracking-wide text-slate-500">
+            <div className="rounded-xl border border-borde bg-superficie p-4 shadow-carta">
+              <p className="mb-3 text-[11px] font-semibold uppercase tracking-wider text-tinta-suave">
                 Gasto por mes
               </p>
               <ResponsiveContainer width="100%" height={200}>
                 <LineChart data={serie} margin={{ top: 4, right: 4, left: -8, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="2 4" stroke="#e2e8f0" vertical={false} />
-                  <XAxis dataKey="periodo" fontSize={11} tickLine={false} axisLine={false} stroke="#94a3b8" />
-                  <YAxis
-                    fontSize={11} tickLine={false} axisLine={false} stroke="#94a3b8"
-                    tickFormatter={(v) => `${(v / 1_000_000).toFixed(0)}M`}
-                  />
-                  <Tooltip formatter={(v) => soles(Number(v))} />
+                  <CartesianGrid {...REJILLA} />
+                  <XAxis dataKey="periodo" {...EJE} />
+                  <YAxis {...EJE} tickFormatter={(v) => `${(v / 1_000_000).toFixed(0)}M`} />
+                  <Tooltip content={<Tooltip_ formato={(v) => soles(v)} />} />
+                  {/* Antes esta linea usaba el ambar del semaforo. Un color de
+                      estado no puede ser tambien un color de serie: deja de
+                      significar "atencion" cuando aparece en un grafico que
+                      solo informa. */}
                   <Line
-                    type="monotone" dataKey="monto_gastado" stroke="#b45309"
+                    type="monotone" dataKey="monto_gastado" stroke="var(--dato)"
                     strokeWidth={2} dot={false} name="Gastado"
+                    activeDot={{ r: 4, strokeWidth: 2, stroke: "var(--superficie)" }}
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -245,7 +256,7 @@ export default function Dashboard() {
         </Seccion>
       )}
 
-      <p className="border-t border-slate-200 pt-4 text-xs text-slate-400">
+      <p className="border-t border-borde pt-4 text-xs text-tinta-suave">
         Los KPIs salen de los agregados que <code>ms-analitico</code> mantiene a
         partir de los eventos del sistema. Ningún número se calcula a mano.
       </p>

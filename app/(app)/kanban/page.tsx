@@ -70,8 +70,8 @@ export default function Kanban() {
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Kanban</h1>
-        <p className="text-sm text-slate-500">
+        <h1 className="text-2xl font-semibold tracking-tight text-tinta">Kanban</h1>
+        <p className="text-sm text-tinta-media">
           Arrastra una tarjeta a otra columna para cambiar el estado del proyecto
         </p>
       </div>
@@ -91,10 +91,10 @@ export default function Kanban() {
               className="rounded-lg bg-slate-100 p-2"
             >
               <div className="mb-2 flex items-center justify-between px-1">
-                <h2 className="text-sm font-medium text-slate-700">
+                <h2 className="text-sm font-medium text-tinta-media">
                   {col.titulo}
                 </h2>
-                <span className="text-xs text-slate-500">{enColumna.length}</span>
+                <span className="text-xs text-tinta-media">{enColumna.length}</span>
               </div>
 
               <div className="space-y-2">
@@ -105,30 +105,30 @@ export default function Kanban() {
                     onDragStart={(e) =>
                       e.dataTransfer.setData("text/plain", String(p.id))
                     }
-                    className={`cursor-grab rounded-md border border-slate-200 bg-white p-2.5 text-sm ${
+                    className={`cursor-grab rounded-md border border-borde bg-superficie p-2.5 text-sm ${
                       moviendo === p.id ? "opacity-50" : ""
                     }`}
                   >
                     <Link
                       href={`/proyecto?id=${p.id}`}
-                      className="font-medium text-slate-900 hover:underline"
+                      className="font-medium text-tinta hover:underline"
                     >
                       {p.nombre}
                     </Link>
                     <div className="mt-1 flex items-center justify-between">
                       <Semaforo salud={p.salud} />
-                      <span className="text-xs tabular-nums text-slate-500">
+                      <span className="text-xs tabular-nums text-tinta-media">
                         {Number(p.avance_pct).toFixed(0)}%
                       </span>
                     </div>
-                    <p className="mt-1 text-xs tabular-nums text-slate-400">
+                    <p className="mt-1 text-xs tabular-nums text-tinta-suave">
                       {soles(p.presupuesto_estimado)}
                     </p>
                   </div>
                 ))}
 
                 {enColumna.length === 0 && (
-                  <p className="px-1 py-4 text-center text-xs text-slate-400">
+                  <p className="px-1 py-4 text-center text-xs text-tinta-suave">
                     vacío
                   </p>
                 )}

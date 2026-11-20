@@ -56,7 +56,7 @@ function BarraCarga({ ocupacion }: { ocupacion: number }) {
       </div>
       <span
         className={`w-16 shrink-0 text-right text-xs font-medium tabular-nums ${
-          ocupacion > 100 ? "text-rojo" : "text-slate-600"
+          ocupacion > 100 ? "text-rojo" : "text-tinta-media"
         }`}
       >
         {pct(ocupacion)}
@@ -96,10 +96,10 @@ export default function Carga() {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
+        <h1 className="text-2xl font-semibold tracking-tight text-tinta">
           Carga del equipo
         </h1>
-        <p className="text-sm text-slate-500">
+        <p className="text-sm text-tinta-media">
           Ocupación semanal de cada persona. En rojo, lo que pasa de su capacidad.
         </p>
       </div>
@@ -139,9 +139,9 @@ export default function Carga() {
       {lista.length === 0 ? (
         <Vacio mensaje="Nadie sobreasignado. El equipo está dentro de su capacidad." />
       ) : (
-        <div className="overflow-hidden rounded-lg border border-slate-200 bg-white">
+        <div className="overflow-hidden rounded-lg border border-borde bg-superficie">
           <table className="w-full text-sm">
-            <thead className="bg-slate-50 text-left text-xs uppercase text-slate-500">
+            <thead className="bg-slate-50 text-left text-xs uppercase text-tinta-media">
               <tr>
                 <th className="px-4 py-2 font-medium">Persona</th>
                 <th className="px-4 py-2 text-right font-medium">Capacidad</th>
@@ -163,7 +163,7 @@ export default function Carga() {
                       detalle={p.rol_tecnico}
                     />
                   </td>
-                  <td className="px-4 py-2 text-right tabular-nums text-slate-600">
+                  <td className="px-4 py-2 text-right tabular-nums text-tinta-media">
                     {p.capacidad_horas_semana} h
                   </td>
                   <td className="px-4 py-2">
@@ -182,7 +182,7 @@ export default function Carga() {
         </div>
       )}
 
-      <p className="text-xs text-slate-400">
+      <p className="text-xs text-tinta-suave">
         La vista solo cuenta asignaciones vigentes hoy. Asignar a alguien que ya
         está al 100% publica <code>recurso.sobreasignado</code> y le llega la
         alerta al PM.

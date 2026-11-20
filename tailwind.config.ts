@@ -11,10 +11,23 @@ export default {
         sans: ["var(--fuente)", ...defaultTheme.fontFamily.sans],
       },
       colors: {
-        // El semaforo de salud del portafolio
-        verde: "#15803d",
-        ambar: "#b45309",
-        rojo: "#b91c1c",
+        // El semaforo de salud: relleno (marca) y tinta (texto) separados,
+        // porque el relleno que mejor se distingue no siempre se puede leer.
+        verde: "var(--tinta-bien)",
+        ambar: "var(--tinta-alerta)",
+        rojo: "var(--tinta-critico)",
+        estado: {
+          bien: "var(--estado-bien)",
+          alerta: "var(--estado-alerta)",
+          critico: "var(--estado-critico)",
+        },
+        // Color de serie de los graficos
+        dato: {
+          DEFAULT: "var(--dato)",
+          tenue: "var(--dato-tenue)",
+        },
+        rejilla: "var(--rejilla)",
+        eje: "var(--eje)",
         // Identidad del producto
         marca: {
           DEFAULT: "var(--marca)",

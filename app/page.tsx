@@ -59,6 +59,7 @@ export default function Login() {
       guardarSesion("token-de-prueba", {
         usuario_id: "mock", email, nombre: "Admin de prueba",
         rol: "admin", tenant_id: tenantId,
+        tenant_nombre: tenants.find((t) => t.tenant_id === tenantId)?.nombre,
       });
       router.push("/dashboard");
       return;

@@ -173,17 +173,17 @@ function Detalle() {
   return (
     <div className="space-y-6">
       <div>
-        <Link href="/proyectos" className="text-sm text-slate-500 hover:underline">
+        <Link href="/proyectos" className="text-sm text-tinta-media hover:underline">
           ← Proyectos
         </Link>
         <div className="mt-1 flex items-center gap-3">
-          <h1 className="text-2xl font-semibold tracking-tight text-slate-900">
+          <h1 className="text-2xl font-semibold tracking-tight text-tinta">
             {proyecto.nombre}
           </h1>
           <Semaforo salud={proyecto.salud} />
           <Estado estado={proyecto.estado} />
         </div>
-        <p className="text-sm text-slate-500">
+        <p className="text-sm text-tinta-media">
           {proyecto.codigo} · {proyecto.portafolio}
         </p>
       </div>
@@ -195,35 +195,35 @@ function Detalle() {
       )}
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <div className="rounded-lg border border-slate-200 bg-white p-4">
-          <p className="text-xs uppercase text-slate-500">Avance</p>
+        <div className="rounded-lg border border-borde bg-superficie p-4">
+          <p className="text-xs uppercase text-tinta-media">Avance</p>
           <p className="mt-1 text-2xl font-semibold tabular-nums">
             {pct(proyecto.avance_pct)}
           </p>
           <div className="mt-2">
             <Barra valor={Number(proyecto.avance_pct)} />
           </div>
-          <p className="mt-1 text-xs text-slate-400">
+          <p className="mt-1 text-xs text-tinta-suave">
             lo mantiene el worker, no la API
           </p>
         </div>
 
-        <div className="rounded-lg border border-slate-200 bg-white p-4">
-          <p className="text-xs uppercase text-slate-500">Prioridad</p>
+        <div className="rounded-lg border border-borde bg-superficie p-4">
+          <p className="text-xs uppercase text-tinta-media">Prioridad</p>
           <p className="mt-1 text-2xl font-semibold tabular-nums">
             {Number(proyecto.prioridad_score).toFixed(1)}
           </p>
-          <p className="mt-1 text-xs text-slate-400">score de 0 a 100</p>
+          <p className="mt-1 text-xs text-tinta-suave">score de 0 a 100</p>
         </div>
 
         <div
-          className={`rounded-lg border bg-white p-4 ${
+          className={`rounded-lg border bg-superficie p-4 ${
             presupuesto && Number(presupuesto.ejecutado_pct) >= 90
               ? "border-red-300"
-              : "border-slate-200"
+              : "border-borde"
           }`}
         >
-          <p className="text-xs uppercase text-slate-500">Ejecución</p>
+          <p className="text-xs uppercase text-tinta-media">Ejecución</p>
           {presupuesto ? (
             <>
               <p
@@ -241,7 +241,7 @@ function Detalle() {
               </div>
             </>
           ) : (
-            <p className="mt-2 text-sm text-slate-500">
+            <p className="mt-2 text-sm text-tinta-media">
               {presupuesto === undefined ? (
                 "Cargando la ejecución…"
               ) : (
@@ -258,10 +258,10 @@ function Detalle() {
       <div className="grid gap-6 lg:grid-cols-5">
         {/* Tareas: el panel con el que se dispara el evento */}
         <section className="lg:col-span-3">
-          <h2 className="mb-2 text-sm font-medium text-slate-700">
+          <h2 className="mb-2 text-sm font-medium text-tinta-media">
             Tareas ({completadas} de {tareas.length} completadas)
           </h2>
-          <div className="overflow-hidden rounded-lg border border-slate-200 bg-white">
+          <div className="overflow-hidden rounded-lg border border-borde bg-superficie">
             <table className="w-full text-sm">
               <tbody className="divide-y divide-slate-100">
                 {tareas.map((t) => (
@@ -270,18 +270,18 @@ function Detalle() {
                       <span
                         className={
                           t.estado === "completada"
-                            ? "text-slate-400 line-through"
-                            : "text-slate-900"
+                            ? "text-tinta-suave line-through"
+                            : "text-tinta"
                         }
                       >
                         {t.nombre}
                       </span>
                       {t.tipo === "hito" && (
-                        <span className="ml-2 rounded bg-slate-900 px-1.5 py-0.5 text-[10px] font-medium uppercase text-white">
+                        <span className="ml-2 rounded-md bg-marca px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">
                           hito
                         </span>
                       )}
-                      <div className="mt-0.5 flex items-center gap-3 text-xs text-slate-400">
+                      <div className="mt-0.5 flex items-center gap-3 text-xs text-tinta-suave">
                         <Fecha valor={t.fecha_fin} vence={t.estado !== "completada"} />
                         <span>{t.horas_estimadas} h</span>
                       </div>
@@ -297,7 +297,7 @@ function Detalle() {
                         <button
                           onClick={() => completar(t)}
                           disabled={completando !== null}
-                          className="rounded-md bg-slate-900 px-2.5 py-1 text-xs font-medium text-white disabled:opacity-50"
+                          className="rounded-lg bg-marca px-2.5 py-1 text-xs font-semibold text-white transition-colors hover:bg-marca-fuerte disabled:cursor-not-allowed disabled:opacity-50"
                         >
                           {completando === t.tarea_id
                             ? "Completando..."
@@ -309,7 +309,7 @@ function Detalle() {
                 ))}
                 {tareas.length === 0 && (
                   <tr>
-                    <td colSpan={4} className="px-4 py-8 text-center text-sm text-slate-500">
+                    <td colSpan={4} className="px-4 py-8 text-center text-sm text-tinta-media">
                       Este proyecto no tiene tareas.
                     </td>
                   </tr>
@@ -317,7 +317,7 @@ function Detalle() {
               </tbody>
             </table>
           </div>
-          <p className="mt-2 text-xs text-slate-400">
+          <p className="mt-2 text-xs text-tinta-suave">
             Completar llama solo a ms-tareas. El avance de arriba lo recalcula
             ms-portafolios al recibir <code>tarea.completada</code> por SQS.
           </p>
@@ -326,15 +326,15 @@ function Detalle() {
         <div className="space-y-6 lg:col-span-2">
           {presupuesto && (
             <section>
-              <h2 className="mb-2 text-sm font-medium text-slate-700">
+              <h2 className="mb-2 text-sm font-medium text-tinta-media">
                 Partidas
               </h2>
-              <div className="space-y-2 rounded-lg border border-slate-200 bg-white p-4">
+              <div className="space-y-2 rounded-lg border border-borde bg-superficie p-4">
                 {presupuesto.partidas.map((p) => (
                   <div key={p.id}>
                     <div className="flex justify-between text-xs">
-                      <span className="text-slate-700">{p.nombre}</span>
-                      <span className="tabular-nums text-slate-500">
+                      <span className="text-tinta-media">{p.nombre}</span>
+                      <span className="tabular-nums text-tinta-media">
                         {soles(p.gastado)} / {soles(p.monto_asignado)}
                       </span>
                     </div>
@@ -356,7 +356,7 @@ function Detalle() {
 
           {presupuesto && (
             <section>
-              <h2 className="mb-2 text-sm font-medium text-slate-700">
+              <h2 className="mb-2 text-sm font-medium text-tinta-media">
                 Registrar gasto
               </h2>
               <RegistrarGasto
@@ -369,21 +369,21 @@ function Detalle() {
 
           {proyecto.historial && proyecto.historial.length > 0 && (
             <section>
-              <h2 className="mb-2 text-sm font-medium text-slate-700">
+              <h2 className="mb-2 text-sm font-medium text-tinta-media">
                 Historial
               </h2>
-              <ol className="space-y-2 rounded-lg border border-slate-200 bg-white p-4 text-xs">
+              <ol className="space-y-2 rounded-lg border border-borde bg-superficie p-4 text-xs">
                 {proyecto.historial.slice(0, 8).map((h, i) => (
                   <li key={i} className="flex gap-2">
-                    <span className="text-slate-400">
+                    <span className="text-tinta-suave">
                       {h.cambiado_en?.slice(0, 10)}
                     </span>
-                    <span className="text-slate-700">
+                    <span className="text-tinta-media">
                       {h.estado_anterior
                         ? `${h.estado_anterior} → ${h.estado_nuevo}`
                         : h.estado_nuevo}
                       {h.motivo && (
-                        <span className="text-slate-400"> · {h.motivo}</span>
+                        <span className="text-tinta-suave"> · {h.motivo}</span>
                       )}
                     </span>
                   </li>
