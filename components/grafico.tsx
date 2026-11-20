@@ -39,7 +39,7 @@ export function Tooltip_({
   if (!active || !payload?.length) return null;
   return (
     <div className="rounded-lg border border-borde bg-superficie px-3 py-2 shadow-elevada">
-      <p className="text-[11px] font-semibold uppercase tracking-wider text-tinta-suave">
+      <p className="text-xs font-medium text-tinta-suave">
         {label}
       </p>
       {payload.map((p, i) => (

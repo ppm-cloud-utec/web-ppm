@@ -6,21 +6,26 @@
    que un cambio de identidad sea un cambio de archivo, no una caceria de
    clases repetidas. */
 :root {
-  --fondo: #f6f7f9;
+  /* Papel y tinta. El fondo no es el gris azulado de cualquier panel ni el
+     crema que delata una plantilla: es un gris neutro de papel tecnico, el
+     soporte sobre el que se leen planos y valorizaciones. */
+  --fondo: #edeeef;
   --superficie: #ffffff;
-  --borde: #e4e7ec;
-  --borde-fuerte: #d3d8e0;
+  --borde: #dfe2e4;
+  --borde-fuerte: #c9ced2;
 
-  --tinta: #101828;
-  --tinta-media: #475467;
-  --tinta-suave: #8792a6;
+  --tinta: #141a1f;
+  --tinta-media: #4a555e;
+  --tinta-suave: #87929a;
 
   /* Azul profundo: serio, no corporativo-genérico. Es el unico color con
      peso de marca; el resto de la interfaz es neutro a proposito para que
      el semaforo de salud (verde/ambar/rojo) nunca compita con el. */
-  --marca: #2d4a7c;
-  --marca-fuerte: #1d3461;
-  --marca-tenue: #eef2f8;
+  /* Azul petroleo, no el indigo de SaaS ni el azul marino corporativo.
+     Es tinta de plano. */
+  --marca: #1c4f6b;
+  --marca-fuerte: #123b52;
+  --marca-tenue: #e7eef1;
 
   /* ---------------------------------------------------------- datos
      Separados del color de marca a proposito. El azul de marca (#2d4a7c)
@@ -49,9 +54,10 @@
   --tinta-alerta: #92600a;
   --tinta-critico: #b91c1c;
 
-  --sombra-carta: 0 1px 2px rgba(16, 24, 40, 0.04),
-                  0 1px 3px rgba(16, 24, 40, 0.06);
-  --sombra-elevada: 0 4px 12px rgba(16, 24, 40, 0.08);
+  /* Una sola sombra, y reservada. Las superficies de datos se separan con
+     una linea de pelo: ponerle la misma sombra a todo aplana la jerarquia
+     en vez de crearla. */
+  --sombra-elevada: 0 6px 20px -6px rgba(20, 26, 31, 0.18);
 }
 
 body {

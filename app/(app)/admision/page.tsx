@@ -141,13 +141,13 @@ export default function Admision() {
         >
           <div className="grid gap-4 text-sm sm:grid-cols-4">
             <div>
-              <p className="text-xs uppercase text-tinta-media">Disponible</p>
+              <p className="text-xs text-tinta-media">Disponible</p>
               <p className="font-semibold tabular-nums">
                 {soles(meta.presupuesto_disponible)}
               </p>
             </div>
             <div>
-              <p className="text-xs uppercase text-tinta-media">
+              <p className="text-xs text-tinta-media">
                 Ya comprometido
               </p>
               <p className="font-semibold tabular-nums">
@@ -155,11 +155,11 @@ export default function Admision() {
               </p>
             </div>
             <div>
-              <p className="text-xs uppercase text-tinta-media">Holgura</p>
+              <p className="text-xs text-tinta-media">Holgura</p>
               <p className="font-semibold tabular-nums">{soles(meta.holgura)}</p>
             </div>
             <div>
-              <p className="text-xs uppercase text-tinta-media">
+              <p className="text-xs text-tinta-media">
                 Selección ({seleccion.length})
               </p>
               <p
@@ -249,7 +249,7 @@ export default function Admision() {
                     <button
                       onClick={() => decidir(p.id, "aprobar")}
                       disabled={trabajando === p.id}
-                      className="rounded-lg bg-marca px-3 py-1.5 text-sm font-semibold text-white shadow-carta transition-colors hover:bg-marca-fuerte disabled:cursor-not-allowed disabled:opacity-50"
+                      className="rounded-lg bg-marca px-3 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-marca-fuerte disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       Aprobar
                     </button>

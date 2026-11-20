@@ -56,22 +56,44 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-8">
-      <header>
-        <h1 className="text-2xl font-semibold tracking-tight text-tinta">
-          Dashboard ejecutivo
+      {/* La apertura responde la pregunta con la que esta persona entra, en
+          una frase. Un numero grande con su etiqueta es el tratamiento por
+          defecto de cualquier panel y obliga a interpretar; aqui el titular
+          ya es la conclusion y debajo esta la evidencia. */}
+      <header className="aparece border-b border-borde-fuerte pb-6">
+        <p className="text-sm text-tinta-media">Hoy en la cartera</p>
+        <h1 className="mt-2 max-w-[22ch] text-[2.1rem] font-semibold leading-[1.15] tracking-tight text-tinta sm:text-[2.6rem]">
+          {riesgo.length === 0 ? (
+            <>Ningún proyecto necesita atención.</>
+          ) : (
+            <>
+              <span className="tabular">{riesgo.length}</span> de{" "}
+              <span className="tabular">
+                {kpis.proyectos_creados.toLocaleString("es-PE")}
+              </span>{" "}
+              proyectos necesitan atención.
+            </>
+          )}
         </h1>
-        <p className="mt-0.5 text-sm text-tinta-media">
-          {kpis.proyectos_creados.toLocaleString("es-PE")} proyectos ·{" "}
-          {kpis.eventos_procesados.toLocaleString("es-PE")} eventos procesados
+        <p className="mt-3 max-w-[60ch] text-sm leading-relaxed text-tinta-media">
+          {kpis.presupuestos_excedidos > 0 ? (
+            <>
+              {kpis.presupuestos_excedidos.toLocaleString("es-PE")} presupuestos
+              cruzaron el 90% de lo aprobado y quedan {soles(saldo)} por ejecutar
+              en toda la cartera.
+            </>
+          ) : (
+            <>Ningún presupuesto cruzó el 90% de lo aprobado. Quedan {soles(saldo)} por ejecutar.</>
+          )}
         </p>
       </header>
 
       {/* ---------------------------------------------- PREGUNTA 1 */}
       <Seccion pregunta="¿En qué estamos gastando y cuánto queda?">
-        <div className="rounded-xl border border-borde bg-superficie p-5">
+        <div className="rounded-bloque border border-borde bg-superficie p-5">
           <div className="flex flex-wrap items-end gap-x-10 gap-y-4">
             <div>
-              <p className="text-xs uppercase tracking-wide text-tinta-media">Saldo disponible</p>
+              <p className="text-xs text-tinta-media">Saldo disponible</p>
               <p className="mt-1 text-4xl font-semibold tabular-nums text-tinta">
                 {soles(saldo)}
               </p>
@@ -95,7 +117,7 @@ export default function Dashboard() {
                 kpis.presupuestos_excedidos > 0 ? "bg-red-50" : "bg-slate-50"
               }`}
             >
-              <p className="text-xs uppercase tracking-wide text-tinta-media">Excedidos</p>
+              <p className="text-xs text-tinta-media">Excedidos</p>
               <p
                 className={`text-2xl font-semibold tabular-nums ${
                   kpis.presupuestos_excedidos > 0 ? "text-red-700" : "text-tinta"
@@ -142,7 +164,7 @@ export default function Dashboard() {
         </Seccion>
 
         <Seccion pregunta="¿Cómo va la ejecución?">
-          <div className="rounded-xl border border-borde bg-superficie p-4 shadow-carta">
+          <div className="rounded-dato border border-borde bg-superficie p-4">
             <div className="flex items-baseline justify-between">
               <p className="text-3xl font-semibold tabular-nums text-tinta">
                 {pct(kpis.avance_global_pct)}
@@ -208,8 +230,8 @@ export default function Dashboard() {
       {serie.length > 0 && (
         <Seccion pregunta="¿Cómo venimos en el tiempo?">
           <div className="grid gap-4 lg:grid-cols-2">
-            <div className="rounded-xl border border-borde bg-superficie p-4 shadow-carta">
-              <p className="mb-3 text-[11px] font-semibold uppercase tracking-wider text-tinta-suave">
+            <div className="rounded-dato border border-borde bg-superficie p-4">
+              <p className="mb-3 text-xs font-medium text-tinta-suave">
                 Tareas completadas por mes
               </p>
               <ResponsiveContainer width="100%" height={200}>
@@ -230,8 +252,8 @@ export default function Dashboard() {
               </ResponsiveContainer>
             </div>
 
-            <div className="rounded-xl border border-borde bg-superficie p-4 shadow-carta">
-              <p className="mb-3 text-[11px] font-semibold uppercase tracking-wider text-tinta-suave">
+            <div className="rounded-dato border border-borde bg-superficie p-4">
+              <p className="mb-3 text-xs font-medium text-tinta-suave">
                 Gasto por mes
               </p>
               <ResponsiveContainer width="100%" height={200}>

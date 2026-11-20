@@ -280,13 +280,11 @@ export function Tarjeta({
 }) {
   return (
     <div
-      className={`rounded-xl border p-4 shadow-carta transition-shadow hover:shadow-elevada ${
+      className={`rounded-dato border p-4 ${
         alerta ? "border-red-200 bg-red-50/50" : "border-borde bg-superficie"
       }`}
     >
-      <p className="text-[11px] font-semibold uppercase tracking-wider text-tinta-suave">
-        {titulo}
-      </p>
+      <p className="text-xs text-tinta-media">{titulo}</p>
       <p
         className={`tabular mt-2 font-semibold tracking-tight ${
           acento ? "text-[2rem] leading-none" : "text-2xl leading-none"
@@ -324,7 +322,7 @@ export function Cargando({ que = "datos" }: { que?: string }) {
 
 export function Error_({ mensaje }: { mensaje: string }) {
   return (
-    <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800 shadow-carta">
+    <div className="rounded-dato border border-red-200 bg-red-50 p-4 text-sm text-red-800">
       <p className="font-semibold">No se pudo cargar</p>
       <p className="mt-0.5">{mensaje}</p>
     </div>
@@ -333,7 +331,7 @@ export function Error_({ mensaje }: { mensaje: string }) {
 
 export function Vacio({ mensaje, accion }: { mensaje: string; accion?: React.ReactNode }) {
   return (
-    <div className="rounded-xl border border-dashed border-borde-fuerte bg-superficie/60 px-6 py-14 text-center">
+    <div className="rounded-dato border border-dashed border-borde-fuerte px-6 py-14 text-center">
       <p className="text-sm text-tinta-media">{mensaje}</p>
       {accion && <div className="mt-3">{accion}</div>}
     </div>

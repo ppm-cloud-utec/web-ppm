@@ -141,7 +141,7 @@ export default function Carga() {
       ) : (
         <div className="overflow-hidden rounded-lg border border-borde bg-superficie">
           <table className="w-full text-sm">
-            <thead className="bg-slate-50 text-left text-xs uppercase text-tinta-media">
+            <thead className="bg-slate-50 text-left text-xs text-tinta-media">
               <tr>
                 <th className="px-4 py-2 font-medium">Persona</th>
                 <th className="px-4 py-2 text-right font-medium">Capacidad</th>

@@ -89,8 +89,9 @@ export default function Proyectos() {
           <Semaforo salud={p.salud} mini />
           <div className="min-w-0">
             <p className="truncate font-medium text-tinta">{p.nombre}</p>
-            <p className="truncate text-xs text-tinta-suave">
-              {p.codigo} · {p.portafolio}
+            <p className="truncate text-xs">
+              <span className="font-mono text-tinta-suave">{p.codigo}</span>
+              <span className="ml-2 text-tinta-suave">{p.portafolio}</span>
             </p>
           </div>
         </div>
@@ -143,11 +144,10 @@ export default function Proyectos() {
       {/* Jerarquia editorial: el numero es el dato, no una nota al pie.
           Antes el titulo pesaba mas que la cifra que la gente viene a ver. */}
       <header className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-        <div className="flex items-baseline gap-3">
+        <div>
           <h1 className="text-2xl font-semibold tracking-tight text-tinta">Proyectos</h1>
-          <span className="text-tinta-suave">·</span>
-          <p className="text-sm text-tinta-media">
-            <span className="tabular text-base font-semibold text-tinta">
+          <p className="mt-1 text-sm text-tinta-media">
+            <span className="tabular font-medium text-tinta">
               {total.toLocaleString("es-PE")}
             </span>{" "}
             en esta organización
@@ -181,7 +181,7 @@ export default function Proyectos() {
             value={busqueda}
             onChange={(e) => setBusqueda(e.target.value)}
             placeholder="Buscar por nombre, código o portafolio en esta página…"
-            className="w-full rounded-xl border border-borde bg-superficie py-2.5 pl-9 pr-3 text-sm shadow-carta transition-colors placeholder:text-tinta-suave hover:border-borde-fuerte focus:border-marca"
+            className="w-full rounded-dato border border-borde bg-superficie py-2.5 pl-9 pr-3 text-sm transition-colors placeholder:text-tinta-suave hover:border-borde-fuerte focus:border-marca"
           />
         </div>
 
@@ -265,14 +265,15 @@ export default function Proyectos() {
               <li key={p.id}>
                 <button
                   onClick={() => router.push(`/proyecto?id=${p.id}`)}
-                  className="w-full rounded-xl border border-borde bg-superficie p-3 text-left shadow-carta transition-shadow hover:shadow-elevada"
+                  className="w-full rounded-dato border border-borde bg-superficie p-3 text-left"
                 >
                   <div className="flex items-start gap-2.5">
                     <span className="mt-1.5"><Semaforo salud={p.salud} mini /></span>
                     <div className="min-w-0 flex-1">
                       <p className="truncate font-medium text-tinta">{p.nombre}</p>
-                      <p className="truncate text-xs text-tinta-suave">
-                        {p.codigo} · {p.portafolio}
+                      <p className="truncate text-xs">
+                        <span className="font-mono text-tinta-suave">{p.codigo}</span>
+                        <span className="ml-2 text-tinta-suave">{p.portafolio}</span>
                       </p>
                     </div>
                     <Estado estado={p.estado} />

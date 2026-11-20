@@ -58,7 +58,7 @@ export default function LayoutApp({ children }: { children: React.ReactNode }) {
 
         {/* Organizacion activa: lo mas visible de la barra */}
         <div className="mx-3 mb-4 rounded-xl bg-white/[0.07] px-3 py-2.5 ring-1 ring-inset ring-white/10">
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+          <p className="text-[11px] font-medium text-slate-400">
             Organización
           </p>
           <p className="mt-1 truncate text-sm font-semibold text-white">

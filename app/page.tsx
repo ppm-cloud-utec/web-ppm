@@ -158,7 +158,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={entrando || !tenantId}
-            className="w-full rounded-lg bg-marca px-4 py-2.5 text-sm font-semibold text-white shadow-carta transition-colors hover:bg-marca-fuerte disabled:cursor-not-allowed disabled:opacity-50"
+            className="w-full rounded-lg bg-marca px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-marca-fuerte disabled:cursor-not-allowed disabled:opacity-50"
           >
             {entrando ? "Entrando..." : "Entrar"}
           </button>

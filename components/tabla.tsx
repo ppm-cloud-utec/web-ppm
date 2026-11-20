@@ -51,17 +51,17 @@ export function Tabla<T extends Record<string, any>>({
   }
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-borde bg-superficie shadow-carta">
+    <div className="overflow-x-auto rounded-dato border border-borde bg-superficie">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-borde bg-slate-50/70">
+          <tr>
             {columnas.map((c) => {
               const activa = orden?.col === c.clave;
               return (
                 <th
                   key={c.clave}
                   style={c.ancho ? { width: c.ancho } : undefined}
-                  className={`px-3 py-2.5 text-[11px] font-semibold uppercase tracking-wider ${
+                  className={`border-b border-borde px-3 pb-2 pt-3 text-xs font-medium ${
                     c.numerica ? "text-right" : "text-left"
                   } text-tinta-suave`}
                 >

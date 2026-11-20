@@ -156,7 +156,7 @@ export default function Portafolios() {
         </div>
         <button
           onClick={() => setAbierto((v) => !v)}
-          className="rounded-lg bg-marca px-3 py-1.5 text-sm font-semibold text-white shadow-carta transition-colors hover:bg-marca-fuerte"
+          className="rounded-lg bg-marca px-3 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-marca-fuerte"
         >
           {abierto ? "Cancelar" : "Nuevo portafolio"}
         </button>
@@ -174,7 +174,7 @@ export default function Portafolios() {
           className="space-y-3 rounded-lg border border-borde bg-superficie p-4"
         >
           <div>
-            <label className="text-xs font-medium uppercase text-tinta-media">Nombre</label>
+            <label className="text-xs font-medium text-tinta-media">Nombre</label>
             <input
               required
               value={nombre}
@@ -183,7 +183,7 @@ export default function Portafolios() {
             />
           </div>
           <div>
-            <label className="text-xs font-medium uppercase text-tinta-media">
+            <label className="text-xs font-medium text-tinta-media">
               Objetivo estratégico
             </label>
             <input
@@ -195,7 +195,7 @@ export default function Portafolios() {
             />
           </div>
           <div>
-            <label className="text-xs font-medium uppercase text-tinta-media">
+            <label className="text-xs font-medium text-tinta-media">
               Presupuesto disponible (opcional)
             </label>
             <input
@@ -206,7 +206,7 @@ export default function Portafolios() {
             />
           </div>
           <div>
-            <label className="text-xs font-medium uppercase text-tinta-media">
+            <label className="text-xs font-medium text-tinta-media">
               Descripción (opcional)
             </label>
             <textarea
@@ -220,7 +220,7 @@ export default function Portafolios() {
           <button
             type="submit"
             disabled={guardando || !nombre.trim() || !objetivo.trim()}
-            className="rounded-lg bg-marca px-3 py-1.5 text-sm font-semibold text-white shadow-carta transition-colors hover:bg-marca-fuerte disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-lg bg-marca px-3 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-marca-fuerte disabled:cursor-not-allowed disabled:opacity-50"
           >
             {guardando ? "Creando…" : "Crear portafolio"}
           </button>

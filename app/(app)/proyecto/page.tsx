@@ -184,7 +184,8 @@ function Detalle() {
           <Estado estado={proyecto.estado} />
         </div>
         <p className="text-sm text-tinta-media">
-          {proyecto.codigo} · {proyecto.portafolio}
+          <span className="font-mono">{proyecto.codigo}</span>
+          <span className="ml-2">{proyecto.portafolio}</span>
         </p>
       </div>
 
@@ -196,7 +197,7 @@ function Detalle() {
 
       <div className="grid gap-4 sm:grid-cols-3">
         <div className="rounded-lg border border-borde bg-superficie p-4">
-          <p className="text-xs uppercase text-tinta-media">Avance</p>
+          <p className="text-xs text-tinta-media">Avance</p>
           <p className="mt-1 text-2xl font-semibold tabular-nums">
             {pct(proyecto.avance_pct)}
           </p>
@@ -209,7 +210,7 @@ function Detalle() {
         </div>
 
         <div className="rounded-lg border border-borde bg-superficie p-4">
-          <p className="text-xs uppercase text-tinta-media">Prioridad</p>
+          <p className="text-xs text-tinta-media">Prioridad</p>
           <p className="mt-1 text-2xl font-semibold tabular-nums">
             {Number(proyecto.prioridad_score).toFixed(1)}
           </p>
@@ -223,7 +224,7 @@ function Detalle() {
               : "border-borde"
           }`}
         >
-          <p className="text-xs uppercase text-tinta-media">Ejecución</p>
+          <p className="text-xs text-tinta-media">Ejecución</p>
           {presupuesto ? (
             <>
               <p
@@ -277,7 +278,7 @@ function Detalle() {
                         {t.nombre}
                       </span>
                       {t.tipo === "hito" && (
-                        <span className="ml-2 rounded-md bg-marca px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">
+                        <span className="ml-2 rounded-md bg-marca px-1.5 py-0.5 text-[10px] font-semibold text-white">
                           hito
                         </span>
                       )}

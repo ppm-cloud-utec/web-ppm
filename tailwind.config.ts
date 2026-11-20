@@ -9,6 +9,7 @@ export default {
         // Inter llega por next/font; el fallback mantiene la pantalla
         // legible si la tipografia tarda en cargar.
         sans: ["var(--fuente)", ...defaultTheme.fontFamily.sans],
+        mono: ["var(--fuente-mono)", ...defaultTheme.fontFamily.mono],
       },
       colors: {
         // El semaforo de salud: relleno (marca) y tinta (texto) separados,
@@ -44,8 +45,13 @@ export default {
         },
       },
       boxShadow: {
-        carta: "var(--sombra-carta)",
         elevada: "var(--sombra-elevada)",
+      },
+      borderRadius: {
+        // El radio codifica jerarquia: la respuesta principal es mas blanda
+        // que la tabla que la sustenta.
+        dato: "0.375rem",
+        bloque: "0.75rem",
       },
     },
   },
