@@ -90,55 +90,40 @@ export default function Login() {
   // que es como se leen numeros durante horas sin cansarse.
   return (
     <main className="relative min-h-screen bg-[#0d0f14] text-white">
-      <div className="mx-auto grid min-h-screen max-w-5xl items-center gap-12 px-6 py-16 lg:grid-cols-[1.1fr_auto]">
-        <div>
+      <div className="mx-auto flex min-h-screen max-w-6xl flex-col px-6 py-10 xl:max-w-7xl xl:px-12">
+        <header className="shrink-0">
           <span className="flex w-fit items-center gap-3">
-            <Marca tam={38} />
-            <span className="text-lg font-semibold tracking-tight">Portafolio</span>
+            <Marca tam={44} />
+            <span className="text-xl font-semibold tracking-tight">Portafolio</span>
           </span>
+        </header>
 
-          <h1 className="mt-10 max-w-[14ch] text-[2.6rem] font-semibold leading-[1.05] tracking-tight sm:text-[3.4rem]">
+        <div className="grid flex-1 items-center gap-12 py-12 lg:grid-cols-[1.15fr_auto] lg:gap-20">
+        <div>
+          <h1 className="max-w-[13ch] text-[clamp(2.75rem,5.6vw,5.25rem)] font-semibold leading-[1.02] tracking-[-0.02em]">
             Decide qué obra va primero.
           </h1>
-          <p className="mt-5 max-w-[46ch] text-base leading-relaxed text-white/70">
+          <p className="mt-7 max-w-[44ch] text-[clamp(1rem,1.25vw,1.375rem)] leading-relaxed text-white/70">
             Portafolios, proyectos, recursos y presupuestos de toda la
             organización en una sola cartera, priorizada y al día.
           </p>
 
-          {/* Las cuatro marcas: dicen que esto sirve a varias organizaciones
-              antes de que nadie entre a verlo. */}
-          <div className="mt-12">
-            <p className="text-sm text-white/45">Organizaciones en esta instalación</p>
-            <ul className="mt-4 flex flex-wrap items-center gap-x-7 gap-y-4">
-              {[
-                ["t-acme", "Acme Ingeniería"],
-                ["t-globex", "Globex Consulting"],
-                ["t-initech", "Initech Software"],
-                ["t-umbrella", "Umbrella Corp"],
-              ].map(([id, nombre]) => (
-                <li key={id} className="flex items-center gap-2 text-sm text-white/70">
-                  <MarcaOrganizacion tenantId={id} nombre={nombre} tam={20} />
-                  {nombre}
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
 
-      <div className="relative w-full max-w-sm">
+      <div className="relative w-full lg:w-[25rem] xl:w-[27rem]">
 
         <form
           onSubmit={entrar}
-          className="space-y-4 rounded-2xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur"
+          className="space-y-5 rounded-2xl border border-white/10 bg-white/[0.04] p-7 backdrop-blur xl:p-8"
         >
           <div>
-            <label className="block text-sm font-medium text-white/60">
+            <label className="block text-sm font-medium text-white/65">
               Organización
             </label>
             <select
               value={tenantId}
               onChange={(e) => setTenantId(e.target.value)}
-              className="mt-1.5 w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm text-white transition-colors placeholder:text-white/35 hover:border-white/30 focus:border-marca"
+              className="mt-2 w-full rounded-lg border border-white/15 bg-white/5 px-3.5 py-2.5 text-[15px] text-white transition-colors placeholder:text-white/35 hover:border-white/30 focus:border-marca"
               required
             >
               <option value="">Elige una organización</option>
@@ -151,27 +136,27 @@ export default function Login() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-white/60">
+            <label className="block text-sm font-medium text-white/65">
               Correo
             </label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1.5 w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm text-white transition-colors placeholder:text-white/35 hover:border-white/30 focus:border-marca"
+              className="mt-2 w-full rounded-lg border border-white/15 bg-white/5 px-3.5 py-2.5 text-[15px] text-white transition-colors placeholder:text-white/35 hover:border-white/30 focus:border-marca"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-white/60">
+            <label className="block text-sm font-medium text-white/65">
               Contraseña
             </label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-1.5 w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm text-white transition-colors placeholder:text-white/35 hover:border-white/30 focus:border-marca"
+              className="mt-2 w-full rounded-lg border border-white/15 bg-white/5 px-3.5 py-2.5 text-[15px] text-white transition-colors placeholder:text-white/35 hover:border-white/30 focus:border-marca"
               required={!USAR_MOCKS}
             />
           </div>
@@ -185,7 +170,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={entrando || !tenantId}
-            className="w-full rounded-lg bg-marca px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-marca-fuerte disabled:cursor-not-allowed disabled:opacity-50"
+            className="w-full rounded-lg bg-marca px-4 py-3 text-[15px] font-semibold text-white transition-colors hover:bg-marca-fuerte disabled:cursor-not-allowed disabled:opacity-50"
           >
             {entrando ? "Entrando..." : "Entrar"}
           </button>
@@ -197,6 +182,26 @@ export default function Login() {
           </p>
         )}
         </div>
+        </div>
+
+        {/* Las cuatro marcas, ancladas abajo: dan pie a la pagina y dicen que
+            esto sirve a varias organizaciones antes de que nadie entre. */}
+        <footer className="shrink-0 border-t border-white/10 pt-6">
+          <p className="text-[15px] text-white/40">Organizaciones en esta instalación</p>
+          <ul className="mt-4 flex flex-wrap items-center gap-x-10 gap-y-4">
+            {[
+              ["t-acme", "Acme Ingeniería"],
+              ["t-globex", "Globex Consulting"],
+              ["t-initech", "Initech Software"],
+              ["t-umbrella", "Umbrella Corp"],
+            ].map(([id, nombre]) => (
+              <li key={id} className="flex items-center gap-2.5 text-[15px] text-white/70">
+                <MarcaOrganizacion tenantId={id} nombre={nombre} tam={26} />
+                {nombre}
+              </li>
+            ))}
+          </ul>
+        </footer>
       </div>
     </main>
   );

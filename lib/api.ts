@@ -6,6 +6,8 @@
  * DENTRO del token y nunca en el body ni en la URL.
  */
 
+import { ENDPOINTS } from "./endpoints";
+
 export type Respuesta<T> = {
   ok: true;
   datos: T;
@@ -17,14 +19,19 @@ export type ErrorApi = {
   error: { codigo: string; mensaje: string };
 };
 
-/** Los 6 microservicios, cada uno con su API Gateway. */
+/**
+ * Los 6 microservicios, cada uno con su API Gateway.
+ *
+ * La variable de entorno manda si existe; si no, la direccion del despliegue
+ * actual, que vive en lib/endpoints.ts. Ver ahi por que no esta en un .env.
+ */
 export const SERVICIOS = {
-  identidad: process.env.NEXT_PUBLIC_API_IDENTIDAD,
-  portafolios: process.env.NEXT_PUBLIC_API_PORTAFOLIOS,
-  tareas: process.env.NEXT_PUBLIC_API_TAREAS,
-  recursos: process.env.NEXT_PUBLIC_API_RECURSOS,
-  presupuestos: process.env.NEXT_PUBLIC_API_PRESUPUESTOS,
-  analitico: process.env.NEXT_PUBLIC_API_ANALITICO,
+  identidad: process.env.NEXT_PUBLIC_API_IDENTIDAD ?? ENDPOINTS.identidad,
+  portafolios: process.env.NEXT_PUBLIC_API_PORTAFOLIOS ?? ENDPOINTS.portafolios,
+  tareas: process.env.NEXT_PUBLIC_API_TAREAS ?? ENDPOINTS.tareas,
+  recursos: process.env.NEXT_PUBLIC_API_RECURSOS ?? ENDPOINTS.recursos,
+  presupuestos: process.env.NEXT_PUBLIC_API_PRESUPUESTOS ?? ENDPOINTS.presupuestos,
+  analitico: process.env.NEXT_PUBLIC_API_ANALITICO ?? ENDPOINTS.analitico,
 } as const;
 
 export type Servicio = keyof typeof SERVICIOS;
