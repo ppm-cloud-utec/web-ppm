@@ -14,4 +14,3 @@ build/
 
 # Cache de TypeScript
 *.tsbuildinfo
-.claude/
