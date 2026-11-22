@@ -120,10 +120,10 @@ export default function Portafolios() {
       ),
     },
     {
-      clave: "proyectos", titulo: "Proyectos", numerica: true, ancho: "6rem",
+      clave: "proyectos", titulo: "Proyectos", numerica: true, ancho: "10rem",
       orden: (p) => Number(p.proyectos ?? 0),
       render: (p) => (
-        <span className="text-tinta-media">
+        <span className="whitespace-nowrap text-tinta-media">
           {p.proyectos ?? "—"}
           {Number(p.en_riesgo ?? 0) > 0 && (
             <span className="ml-1 text-xs text-red-600">({p.en_riesgo} en riesgo)</span>

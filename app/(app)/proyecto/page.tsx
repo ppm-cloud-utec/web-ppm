@@ -283,7 +283,8 @@ function Detalle() {
                         </span>
                       )}
                       <div className="mt-0.5 flex items-center gap-3 text-xs text-tinta-suave">
-                        <Fecha valor={t.fecha_fin} vence={t.estado !== "completada"} />
+                        {/* Una tarea cerrada (completada o cancelada) ya no vence. */}
+                        <Fecha valor={t.fecha_fin} vence={!TERMINADA.has(t.estado)} />
                         <span>{t.horas_estimadas} h</span>
                       </div>
                     </td>
@@ -294,7 +295,7 @@ function Detalle() {
                       <Estado estado={t.estado} />
                     </td>
                     <td className="px-4 py-2 text-right">
-                      {t.estado !== "completada" && (
+                      {!TERMINADA.has(t.estado) && (
                         <button
                           onClick={() => completar(t)}
                           disabled={completando !== null}
@@ -397,6 +398,9 @@ function Detalle() {
     </div>
   );
 }
+
+/** Estados en los que una tarea ya no admite "Completar" ni puede vencer. */
+const TERMINADA = new Set(["completada", "cancelada"]);
 
 export default function DetalleProyecto() {
   // useSearchParams exige un limite de Suspense en export estatico.

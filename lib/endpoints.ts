@@ -16,17 +16,19 @@
  * despliegue sin tocar el codigo.
  *
  * Si se redespliega la infraestructura y cambian los identificadores:
- *   aws cloudformation describe-stacks --stack-name ms-<servicio>-dev \
- *     --query "Stacks[0].Outputs[?OutputKey=='ServiceEndpoint'].OutputValue" \
- *     --output text
+ *   aws cloudformation describe-stacks --stack-name infra-compartida-dev \
+ *     --query "Stacks[0].Outputs[?OutputKey=='ApiUrl'].OutputValue" --output text
  */
-const BASE = "execute-api.us-east-1.amazonaws.com/dev";
+// Una sola API Gateway para los 6 microservicios; cada uno vive bajo su
+// prefijo. Las rutas internas no cambian: llamar("portafolios", "/proyectos")
+// sigue funcionando porque el prefijo ya va en la base del servicio.
+const API = "https://t8wutxmr7b.execute-api.us-east-1.amazonaws.com/dev";
 
 export const ENDPOINTS = {
-  identidad: `https://hw5b5suj23.${BASE}`,
-  portafolios: `https://c78c035rtl.${BASE}`,
-  tareas: `https://yq369o7q4k.${BASE}`,
-  recursos: `https://sitxbs7ytj.${BASE}`,
-  presupuestos: `https://xqk5r0tbq3.${BASE}`,
-  analitico: `https://dvynil8hte.${BASE}`,
+  identidad: `${API}/identidad`,
+  portafolios: `${API}/portafolios`,
+  tareas: `${API}/tareas`,
+  recursos: `${API}/recursos`,
+  presupuestos: `${API}/presupuestos`,
+  analitico: `${API}/analitico`,
 } as const;
