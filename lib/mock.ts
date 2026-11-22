@@ -1,11 +1,3 @@
-/**
- * Datos simulados con la MISMA forma que devuelve la API.
- *
- * Existen para que el frontend no quede bloqueado esperando el backend: con
- * NEXT_PUBLIC_USAR_MOCKS=true las pantallas se pueden construir y revisar
- * antes de que los microservicios esten desplegados. Cuando el backend este
- * listo, se pone en false y nada mas cambia.
- */
 
 export const TENANTS = [
   { tenant_id: "t-acme", nombre: "Acme Ingenieria", rubro: "construccion" },
@@ -65,9 +57,6 @@ export const CARGA = [
   { recurso_id: 6, nombre: "Carlos Ramos", rol_tecnico: "Almacenero", capacidad_horas_semana: 48, ocupacion_pct: 0, disponible_pct: 100, horas_comprometidas: 0, sobreasignado: false, n_asignaciones: 0 },
 ];
 
-// El proyecto 1 tiene 5 tareas con 2 completadas: su avance_pct es 40, y al
-// completar una mas sube a 60. Los mocks tienen que ser CONSISTENTES entre si,
-// o la demo con datos simulados muestra numeros que se contradicen.
 export const TAREAS = [
   { tarea_id: "a1", nombre: "Excavacion sector A", tipo: "tarea", estado: "completada", fecha_fin: "2026-09-20", horas_estimadas: 40, responsable: "Luis Flores", responsable_id: "r2" },
   { tarea_id: "a2", nombre: "Encofrado nivel 1", tipo: "tarea", estado: "completada", fecha_fin: "2026-10-02", horas_estimadas: 24, responsable: "Carlos Ramos", responsable_id: "r6" },

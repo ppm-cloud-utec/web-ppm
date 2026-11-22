@@ -1,12 +1,5 @@
 "use client";
 
-/**
- * Login con selector de organizacion.
- *
- * El selector existe porque la demo cambia entre tenants. En un SaaS real el
- * tenant se deduce del subdominio (acme.portafolio.com) y este desplegable no
- * estaria.
- */
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -41,8 +34,6 @@ export default function Login() {
       .catch((e: FalloApi) => setError(e.message));
   }, []);
 
-  // El correo del admin se deduce del tenant elegido, para que la demo sea
-  // de un clic y no haya que recordar los dominios.
   useEffect(() => {
     const dominios: Record<string, string> = {
       "t-acme": "admin@acme.com.pe",
@@ -74,7 +65,6 @@ export default function Login() {
         { metodo: "POST", sinToken: true,
           cuerpo: { tenant_id: tenantId, email, password } },
       );
-      // El nombre sale del selector que ya cargamos, no de una tabla fija.
       const org = tenants?.find((t) => t.tenant_id === tenantId);
       guardarSesion(datos.token, { ...datos.usuario, tenant_nombre: org?.nombre });
       router.push("/dashboard");
@@ -84,10 +74,6 @@ export default function Login() {
     }
   }
 
-  // La entrada es la unica pantalla oscura: es una portada, se ve dos
-  // segundos y es donde la marca puede hablar fuerte. El resto de la
-  // aplicacion se usa horas seguidas leyendo cifras y se queda en claro,
-  // que es como se leen numeros durante horas sin cansarse.
   return (
     <main className="relative min-h-screen bg-[#0d0f14] text-white">
       <div className="mx-auto flex min-h-screen max-w-6xl flex-col px-6 py-10 xl:max-w-7xl xl:px-12">
@@ -184,8 +170,6 @@ export default function Login() {
         </div>
         </div>
 
-        {/* Las cuatro marcas, ancladas abajo: dan pie a la pagina y dicen que
-            esto sirve a varias organizaciones antes de que nadie entre. */}
         <footer className="shrink-0 border-t border-white/10 pt-6">
           <p className="text-[15px] text-white/40">Organizaciones en esta instalación</p>
           <ul className="mt-4 flex flex-wrap items-center gap-x-10 gap-y-4">

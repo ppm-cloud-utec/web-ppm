@@ -1,13 +1,5 @@
 "use client";
 
-/**
- * Detalle del proyecto: EL MOMENTO CLAVE DE LA DEMO.
- *
- * Completar una tarea aqui llama solo a ms-tareas. El avance del proyecto lo
- * recalcula ms-portafolios por evento. Para que se vea, tras completar se
- * vuelve a pedir el proyecto y el porcentaje ya cambio sin que el frontend se
- * lo haya dicho a nadie.
- */
 
 import { Suspense, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
@@ -36,21 +28,10 @@ type Tarea = {
 
 type Presupuesto = typeof PRESUPUESTO;
 
-/**
- * El id viaja como parametro de consulta (?id=7) y no como segmento de ruta.
- *
- * Asi la app entera compila como sitio ESTATICO: no hay rutas dinamicas que
- * Next tenga que conocer en tiempo de build. Todas las pantallas son
- * "use client" y los datos llegan de las APIs en ejecucion, asi que no se
- * pierde nada, y Amplify puede servirla sin computo en servidor.
- */
 function Detalle() {
   const id = useSearchParams().get("id") ?? "";
   const [proyecto, setProyecto] = useState<Proyecto | null>(null);
   const [tareas, setTareas] = useState<Tarea[]>([]);
-  // undefined = aun cargando · null = el proyecto NO tiene presupuesto.
-  // Arrancar en null hacia que la pantalla afirmara "sin presupuesto"
-  // durante el primer segundo de carga, que es mentira.
   const [presupuesto, setPresupuesto] = useState<Presupuesto | null | undefined>(undefined);
   const [error, setError] = useState("");
   const [aviso, setAviso] = useState("");
@@ -70,8 +51,6 @@ function Detalle() {
       ]);
       setProyecto(p.datos);
       setTareas(t.datos);
-      // El presupuesto puede no existir si el proyecto es muy nuevo y el
-      // evento aun no llego: no es un error que deba romper la pantalla.
       try {
         const b = await llamar<Presupuesto>("presupuestos", `/presupuestos/${id}`);
         setPresupuesto(b.datos);
@@ -117,8 +96,6 @@ function Detalle() {
         metodo: "POST",
       });
 
-      // El worker de ms-portafolios tarda un instante en procesar el evento.
-      // Se espera un momento y se recarga: el avance ya cambio solo.
       setAviso("Evento publicado. Esperando que el worker recalcule el avance...");
       await new Promise((r) => setTimeout(r, 2500));
       await cargar();
@@ -257,7 +234,6 @@ function Detalle() {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-5">
-        {/* Tareas: el panel con el que se dispara el evento */}
         <section className="lg:col-span-3">
           <h2 className="mb-2 text-sm font-medium text-tinta-media">
             Tareas ({completadas} de {tareas.length} completadas)
@@ -283,7 +259,6 @@ function Detalle() {
                         </span>
                       )}
                       <div className="mt-0.5 flex items-center gap-3 text-xs text-tinta-suave">
-                        {/* Una tarea cerrada (completada o cancelada) ya no vence. */}
                         <Fecha valor={t.fecha_fin} vence={!TERMINADA.has(t.estado)} />
                         <span>{t.horas_estimadas} h</span>
                       </div>
@@ -399,11 +374,9 @@ function Detalle() {
   );
 }
 
-/** Estados en los que una tarea ya no admite "Completar" ni puede vencer. */
 const TERMINADA = new Set(["completada", "cancelada"]);
 
 export default function DetalleProyecto() {
-  // useSearchParams exige un limite de Suspense en export estatico.
   return (
     <Suspense fallback={<Cargando que="el proyecto" />}>
       <Detalle />

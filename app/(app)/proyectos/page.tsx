@@ -1,6 +1,5 @@
 "use client";
 
-/** Tabla de proyectos: la vista Grid, ordenable y densa. */
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -27,7 +26,6 @@ const navBoton =
   "transition-colors hover:border-borde-fuerte hover:text-tinta " +
   "disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-borde";
 
-/** Pastilla de filtro. Activa = se ve activa sin tener que abrirla. */
 function pastilla(activo: boolean) {
   return `rounded-full border px-3 py-1.5 text-sm transition-colors ${
     activo
@@ -73,8 +71,6 @@ export default function Proyectos() {
 
   if (error) return <Error_ mensaje={error} />;
 
-  // La busqueda filtra en cliente sobre la pagina cargada: es un afinado
-  // rapido, no sustituye al filtro del servidor.
   const visibles = (proyectos ?? []).filter((p) =>
     busqueda
       ? `${p.nombre} ${p.codigo} ${p.portafolio}`.toLowerCase().includes(busqueda.toLowerCase())
@@ -144,8 +140,6 @@ export default function Proyectos() {
 
   return (
     <div className="space-y-5">
-      {/* Jerarquia editorial: el numero es el dato, no una nota al pie.
-          Antes el titulo pesaba mas que la cifra que la gente viene a ver. */}
       <header className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-tinta">Proyectos</h1>
@@ -166,11 +160,6 @@ export default function Proyectos() {
         )}
       </header>
 
-      {/* ------------------------------------------------- filtros
-          Antes eran cuatro controles sueltos dentro de una caja gris, que es
-          justo el aspecto de plantilla que hay que evitar. Ahora la busqueda
-          manda y los filtros son pastillas: se ve de un vistazo cuales estan
-          puestos, sin leer el contenido de cada desplegable. */}
       <div className="space-y-3">
         <div className="relative">
           <span
@@ -250,9 +239,6 @@ export default function Proyectos() {
         />
       ) : (
         <>
-          {/* La tabla de 7 columnas no cabe en un telefono: debajo de md se
-              cambia por tarjetas con los mismos datos, no por un scroll
-              horizontal que obliga a arrastrar para leer una fila. */}
           <div className="aparece hidden md:block">
             <Tabla
               columnas={columnas}
@@ -300,8 +286,6 @@ export default function Proyectos() {
               aria-label="Paginación"
               className="flex items-center justify-between gap-3 text-sm"
             >
-              {/* Decir el rango, no solo el numero de pagina: "26–50 de 500"
-                  ubica a la persona; "Pagina 2 de 20" la obliga a calcular. */}
               <p className="text-tinta-media">
                 <span className="tabular font-medium text-tinta">
                   {(pagina - 1) * 25 + 1}–{Math.min(pagina * 25, total)}

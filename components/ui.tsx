@@ -2,17 +2,13 @@
 
 import { pct, soles } from "@/lib/api";
 
-/* ------------------------------------------------------------------ salud */
 
-/** El semaforo del portafolio. Lo calcula el backend, no el front. */
 export function Semaforo({ salud, mini = false }: { salud: string; mini?: boolean }) {
   const estilos: Record<string, string> = {
     verde: "bg-emerald-50 text-emerald-700 ring-emerald-600/20",
     ambar: "bg-amber-50 text-amber-700 ring-amber-600/20",
     rojo: "bg-red-50 text-red-700 ring-red-600/20",
   };
-  // Rellenos verificados con el validador de paleta: el par ambar/rojo
-  // pasa de 4.9 a 24.4 de separacion en deuteranopia.
   const punto: Record<string, string> = {
     verde: "bg-estado-bien",
     ambar: "bg-estado-alerta",
@@ -64,23 +60,12 @@ export function Estado({ estado }: { estado: string }) {
   );
 }
 
-/* ---------------------------------------------------------------- avatar */
 
-// Colores de identidad, en saturado y con texto blanco. El pastel anterior
-// desaparecia contra el papel; estos dan a la pantalla la vida que tiene un
-// tablero lleno de gente y carteras.
 const COLORES = [
   "var(--id-1)", "var(--id-2)", "var(--id-3)", "var(--id-4)",
   "var(--id-5)", "var(--id-6)", "var(--id-7)", "var(--id-8)",
 ];
 
-/**
- * Mismo nombre -> siempre el mismo color, en toda la aplicacion.
- *
- * djb2 y no una suma de codigos: sumar reparte fatal, porque dos nombres
- * parecidos caen en el mismo resto y dos fichas contiguas salen del mismo
- * tono. Con djb2 la posicion de cada letra cuenta.
- */
 export function colorDe(semillaTexto?: string | null) {
   const t = (semillaTexto || "x").toString();
   let h = 5381;
@@ -88,10 +73,6 @@ export function colorDe(semillaTexto?: string | null) {
   return COLORES[h % COLORES.length];
 }
 
-/**
- * Avatar con iniciales. El color se deriva del identificador, no es aleatorio:
- * la misma persona tiene siempre el mismo color en todas las pantallas.
- */
 export function Avatar({
   nombre,
   id,
@@ -119,11 +100,6 @@ export function Avatar({
   );
 }
 
-/**
- * Cuadro de inicial de una organizacion o una cartera. Cuadrado, no redondo:
- * las personas son circulos y las cosas son cuadrados, asi se distinguen sin
- * leer.
- */
 export function Ficha({
   nombre,
   tam = "md",
@@ -167,13 +143,7 @@ export function Persona({
   );
 }
 
-/* ----------------------------------------------------------------- fecha */
 
-/**
- * Fecha relativa ("hace 3 dias", "en 2 semanas"), con la fecha exacta en el
- * tooltip. En un PPM lo que importa de una fecha es si ya paso o cuanto falta,
- * no el dia concreto.
- */
 export function Fecha({ valor, vence = false }: { valor?: string | null; vence?: boolean }) {
   if (!valor) return <span className="text-tinta-suave">—</span>;
 
@@ -189,7 +159,6 @@ export function Fecha({ valor, vence = false }: { valor?: string | null; vence?:
   else if (abs < 365) texto = dias < 0 ? `hace ${Math.round(abs / 30)} m` : `en ${Math.round(abs / 30)} m`;
   else texto = d.toLocaleDateString("es-PE", { year: "numeric", month: "short" });
 
-  // Una fecha de fin ya vencida es informacion de riesgo: se marca.
   const atrasado = vence && dias < 0;
 
   return (
@@ -202,7 +171,6 @@ export function Fecha({ valor, vence = false }: { valor?: string | null; vence?:
   );
 }
 
-/* ----------------------------------------------------------------- barras */
 
 export function Barra({
   valor,
@@ -214,7 +182,6 @@ export function Barra({
   valor: number;
   umbralAmbar?: number;
   umbralRojo?: number;
-  /** En avance, mas es mejor. En presupuesto, mas es peor. */
   invertido?: boolean;
   etiqueta?: boolean;
 }) {
@@ -231,8 +198,6 @@ export function Barra({
 
   return (
     <div className="flex items-center gap-2">
-      {/* role+aria: con etiqueta={false} el color seria el unico canal, y
-          quien no lo distingue se queda sin el dato. */}
       <div
         role="meter"
         aria-valuenow={Math.round(v)}
@@ -253,10 +218,6 @@ export function Barra({
   );
 }
 
-/**
- * Barra de presupuesto: muestra gastado sobre aprobado, y si se paso del 100%
- * dibuja el exceso en rojo fuera de la escala.
- */
 export function BarraPresupuesto({
   gastado,
   aprobado,
@@ -283,9 +244,6 @@ export function BarraPresupuesto({
         )}
       </div>
       <div className="mt-1 flex justify-between text-xs tabular-nums">
-        {/* La tinta sigue al relleno: antes la barra se ponia ambar al 90% y
-            el texto rojo a la vez, dando dos estados distintos para un solo
-            hecho. */}
         <span
           className={
             exceso > 0
@@ -303,7 +261,6 @@ export function BarraPresupuesto({
   );
 }
 
-/* --------------------------------------------------------------- tarjetas */
 
 export function Tarjeta({
   titulo,
@@ -341,7 +298,6 @@ export function Monto({ valor }: { valor: number | string }) {
   return <span className="tabular-nums">{soles(valor)}</span>;
 }
 
-/* ----------------------------------------------------------------- vacios */
 
 export function Cargando({ que = "datos" }: { que?: string }) {
   return (
@@ -350,8 +306,6 @@ export function Cargando({ que = "datos" }: { que?: string }) {
         <div
           key={i}
           className="h-10 animate-pulse rounded-lg bg-slate-200/70"
-          // Un escalonado corto da sensacion de carga progresiva en vez de
-          // tres barras latiendo a la vez.
           style={{ animationDelay: `${i * 120}ms`, opacity: 1 - i * 0.18 }}
         />
       ))}
@@ -378,7 +332,6 @@ export function Vacio({ mensaje, accion }: { mensaje: string; accion?: React.Rea
   );
 }
 
-/* ---------------------------------------------------------------- seccion */
 
 export function Seccion({
   titulo,
@@ -387,7 +340,6 @@ export function Seccion({
   accion,
 }: {
   titulo?: string;
-  /** La pregunta del producto que responde este bloque. */
   pregunta?: string;
   children: React.ReactNode;
   accion?: React.ReactNode;

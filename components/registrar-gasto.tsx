@@ -1,10 +1,5 @@
 "use client";
 
-/**
- * Formulario de gasto. Llama solo a ms-presupuestos; si el gasto cruza el 90%
- * del presupuesto, ese servicio publica la alerta por SNS y otro microservicio
- * la consume. El frontend no interviene en esa parte.
- */
 
 import { useState } from "react";
 

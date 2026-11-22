@@ -6,14 +6,10 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        // Inter llega por next/font; el fallback mantiene la pantalla
-        // legible si la tipografia tarda en cargar.
         sans: ["var(--fuente)", ...defaultTheme.fontFamily.sans],
         mono: ["var(--fuente-mono)", ...defaultTheme.fontFamily.mono],
       },
       colors: {
-        // El semaforo de salud: relleno (marca) y tinta (texto) separados,
-        // porque el relleno que mejor se distingue no siempre se puede leer.
         verde: "var(--tinta-bien)",
         ambar: "var(--tinta-alerta)",
         rojo: "var(--tinta-critico)",
@@ -48,8 +44,6 @@ export default {
         elevada: "var(--sombra-elevada)",
       },
       borderRadius: {
-        // El radio codifica jerarquia: la respuesta principal es mas blanda
-        // que la tabla que la sustenta.
         dato: "0.375rem",
         bloque: "0.75rem",
       },

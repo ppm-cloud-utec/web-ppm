@@ -1,9 +1,5 @@
 "use client";
 
-/**
- * Vista de Workload: cada persona con su ocupacion, en rojo si pasa del 100%.
- * Es la vista que tienen monday, Smartsheet y Planview.
- */
 
 import { useEffect, useState } from "react";
 
@@ -32,12 +28,9 @@ type Resumen = {
   horas_comprometidas: number;
 };
 
-/** Barra de ocupacion que puede pasar del 100% y lo muestra desbordando. */
 function BarraCarga({ ocupacion }: { ocupacion: number }) {
   const hasta100 = Math.min(ocupacion, 100);
   const exceso = Math.max(ocupacion - 100, 0);
-  // El exceso se dibuja sobre la misma escala de 100, para que se vea cuanto
-  // se paso en proporcion a su capacidad.
   const anchoExceso = Math.min(exceso, 100);
 
   return (

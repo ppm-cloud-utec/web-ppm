@@ -1,15 +1,3 @@
-/**
- * Marca de Portafolio.
- *
- * Tres barras de longitud decreciente: una cartera ordenada por prioridad,
- * que es exactamente lo que hace el producto. Se lee tambien como las
- * primeras filas de un gantt. No es un simbolo abstracto intercambiable con
- * el de cualquier otra app; sale del oficio de quien prioriza obras.
- *
- * Los tres colores son los unicos que pasan la separacion por pares del
- * validador, asi que la marca no introduce tonos que luego compitan con el
- * semaforo de salud.
- */
 export function Marca({ tam = 32 }: { tam?: number }) {
   return (
     <svg
@@ -27,7 +15,6 @@ export function Marca({ tam = 32 }: { tam?: number }) {
   );
 }
 
-/** Marca + nombre, para la cabecera de la barra lateral. */
 export function MarcaConNombre() {
   return (
     <span className="flex items-center gap-2.5">

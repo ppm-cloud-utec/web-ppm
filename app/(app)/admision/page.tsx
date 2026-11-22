@@ -1,12 +1,5 @@
 "use client";
 
-/**
- * Bandeja de admision de demanda, rankeada por score.
- *
- * Es la puerta de entrada del portafolio: nada se vuelve proyecto sin pasar
- * por aqui. Y el ranking solo no sirve — al marcar las propuestas que quiere
- * aprobar, el PMO ve cuanto consumen juntas y si se pasa de lo disponible.
- */
 
 import { useEffect, useState } from "react";
 
@@ -63,8 +56,6 @@ export default function Admision() {
     cargar();
   }, []);
 
-  // Cada vez que cambia la seleccion se le pregunta al backend si cabe en el
-  // presupuesto. El calculo vive alla, no aqui.
   useEffect(() => {
     if (USAR_MOCKS) {
       const costo = propuestas
@@ -130,7 +121,6 @@ export default function Admision() {
         </p>
       </div>
 
-      {/* El panel de capacidad: lo que convierte un ranking en una decision */}
       {meta && (
         <div
           className={`rounded-lg border p-4 ${

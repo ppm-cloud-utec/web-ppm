@@ -1,12 +1,5 @@
 "use client";
 
-/**
- * Dashboard ejecutivo.
- *
- * Esta organizado alrededor de las 4 PREGUNTAS del producto, no como una
- * rejilla de tarjetas iguales: cada bloque responde una, y la respuesta va
- * primero y grande. Un PMO entra aqui a decidir, no a mirar numeros sueltos.
- */
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -56,10 +49,6 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-8">
-      {/* La apertura responde la pregunta con la que esta persona entra, en
-          una frase. Un numero grande con su etiqueta es el tratamiento por
-          defecto de cualquier panel y obliga a interpretar; aqui el titular
-          ya es la conclusion y debajo esta la evidencia. */}
       <header className="aparece border-b border-borde-fuerte pb-6">
         <p className="text-sm text-tinta-media">Hoy en la cartera</p>
         <h1 className="mt-2 max-w-[22ch] text-[2.1rem] font-semibold leading-[1.15] tracking-tight text-tinta sm:text-[2.6rem]">
@@ -88,7 +77,6 @@ export default function Dashboard() {
         </p>
       </header>
 
-      {/* ---------------------------------------------- PREGUNTA 1 */}
       <Seccion pregunta="¿En qué estamos gastando y cuánto queda?">
         <div className="rounded-bloque border border-borde bg-superficie p-5">
           <div className="flex flex-wrap items-end gap-x-10 gap-y-4">
@@ -137,7 +125,6 @@ export default function Dashboard() {
         </div>
       </Seccion>
 
-      {/* ------------------------------------- PREGUNTAS 2 y avance */}
       <div className="grid gap-6 lg:grid-cols-2">
         <Seccion
           pregunta="¿Quién está sobrecargado?"
@@ -184,7 +171,6 @@ export default function Dashboard() {
         </Seccion>
       </div>
 
-      {/* ---------------------------------------------- PREGUNTA 3 */}
       <Seccion
         pregunta="¿Qué proyecto se va a caer?"
         titulo={`${riesgo.length} proyectos en ámbar o rojo`}
@@ -226,7 +212,6 @@ export default function Dashboard() {
         )}
       </Seccion>
 
-      {/* ---------------------------------------------- tendencia */}
       {serie.length > 0 && (
         <Seccion pregunta="¿Cómo venimos en el tiempo?">
           <div className="grid gap-4 lg:grid-cols-2">
@@ -240,8 +225,6 @@ export default function Dashboard() {
                   <XAxis dataKey="periodo" {...EJE} />
                   <YAxis {...EJE} />
                   <Tooltip cursor={CURSOR} content={<Tooltip_ />} />
-                  {/* Extremo redondeado solo arriba: abajo la barra tiene que
-                      apoyar en la linea base o la longitud se lee mal. */}
                   <Bar
                     dataKey="tareas_completadas"
                     fill="var(--dato)"
@@ -262,10 +245,6 @@ export default function Dashboard() {
                   <XAxis dataKey="periodo" {...EJE} />
                   <YAxis {...EJE} tickFormatter={(v) => `${(v / 1_000_000).toFixed(0)}M`} />
                   <Tooltip content={<Tooltip_ formato={(v) => soles(v)} />} />
-                  {/* Antes esta linea usaba el ambar del semaforo. Un color de
-                      estado no puede ser tambien un color de serie: deja de
-                      significar "atencion" cuando aparece en un grafico que
-                      solo informa. */}
                   <Line
                     type="monotone" dataKey="monto_gastado" stroke="var(--dato)"
                     strokeWidth={2} dot={false} name="Gastado"

@@ -1,15 +1,5 @@
 "use client";
 
-/**
- * Shell de la aplicacion.
- *
- * Navegacion LATERAL, como monday y Smartsheet: deja todo el ancho a las
- * tablas y da sensacion de producto, no de sitio web con pestañas.
- *
- * El selector de organizacion vive arriba del todo y siempre visible, porque
- * la demo consiste en cambiar entre Acme y Globex y hay que ver con cual se
- * esta trabajando en cada momento.
- */
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -47,7 +37,6 @@ export default function LayoutApp({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-screen">
-      {/* ---------------------------------------------------- lateral */}
       <aside className="flex w-60 shrink-0 flex-col bg-[#15213a] text-slate-300">
         <div className="px-4 py-4">
           <Link href="/dashboard" className="flex items-center">
@@ -55,7 +44,6 @@ export default function LayoutApp({ children }: { children: React.ReactNode }) {
           </Link>
         </div>
 
-        {/* Organizacion activa: lo mas visible de la barra */}
         <div className="mx-3 mb-4 flex items-center gap-2.5 rounded-xl bg-white/[0.07] px-3 py-2.5 ring-1 ring-inset ring-white/10">
           <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white">
             <MarcaOrganizacion
@@ -112,7 +100,6 @@ export default function LayoutApp({ children }: { children: React.ReactNode }) {
         </div>
       </aside>
 
-      {/* ---------------------------------------------------- contenido */}
       <div className="min-w-0 flex-1">
         <main className="mx-auto max-w-[1400px] p-6">{children}</main>
       </div>

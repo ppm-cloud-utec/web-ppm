@@ -1,6 +1,5 @@
 "use client";
 
-/** Listado y creación de portafolios (ms-portafolios). */
 
 import { useCallback, useEffect, useState } from "react";
 
@@ -9,12 +8,6 @@ import { PORTAFOLIOS } from "@/lib/mock";
 import { Tabla, type Columna } from "@/components/tabla";
 import { Cargando, Error_, Ficha, Vacio } from "@/components/ui";
 
-/**
- * Lo que devuelve GET /portafolios de ms-portafolios. Los nombres salen del
- * SELECT del handler (`proyectos`, `comprometido`, `avance_promedio`): no son
- * inventables, porque TypeScript no puede verificar la forma de una respuesta
- * remota y un nombre que no coincide se renderiza vacio sin avisar.
- */
 type Portafolio = {
   id: number;
   nombre: string;
@@ -62,8 +55,6 @@ export default function Portafolios() {
     setGuardando(true);
     setErrorForm("");
     try {
-      // ms-portafolios valida con campos_permitidos(): un campo de mas da 400,
-      // asi que los opcionales vacios NO se mandan en vez de ir como "".
       const cuerpo: Record<string, unknown> = {
         nombre: nombre.trim(),
         objetivo_estrategico: objetivo.trim(),

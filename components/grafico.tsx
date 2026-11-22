@@ -1,12 +1,5 @@
 "use client";
 
-/**
- * Piezas compartidas de los graficos.
- *
- * El tooltip por defecto de Recharts trae su propia caja blanca, su borde y
- * su tipografia, que no son los del producto: en la misma pantalla convivian
- * dos lenguajes visuales. Este usa los mismos tokens que el resto.
- */
 
 export const EJE = {
   fontSize: 11,
@@ -21,7 +14,6 @@ export const REJILLA = {
   vertical: false,
 } as const;
 
-/** Cursor de hover: una banda tenue, no un bloque gris opaco. */
 export const CURSOR = { fill: "var(--dato-tenue)", fillOpacity: 0.45 } as const;
 
 export function Tooltip_({
@@ -33,7 +25,6 @@ export function Tooltip_({
   active?: boolean;
   payload?: { name?: string; value?: number | string; color?: string }[];
   label?: string | number;
-  /** Como se escribe el valor: soles, porcentaje, entero… */
   formato?: (v: number) => string;
 }) {
   if (!active || !payload?.length) return null;

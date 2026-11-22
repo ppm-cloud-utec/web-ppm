@@ -1,10 +1,3 @@
-/**
- * Cliente HTTP unico para los 6 microservicios.
- *
- * Los 6 responden con la misma forma ({ok, datos, meta} / {ok, error}), asi
- * que basta un cliente. El token se manda en cada llamada; el tenant_id va
- * DENTRO del token y nunca en el body ni en la URL.
- */
 
 import { ENDPOINTS } from "./endpoints";
 
@@ -19,12 +12,6 @@ export type ErrorApi = {
   error: { codigo: string; mensaje: string };
 };
 
-/**
- * Los 6 microservicios, cada uno con su API Gateway.
- *
- * La variable de entorno manda si existe; si no, la direccion del despliegue
- * actual, que vive en lib/endpoints.ts. Ver ahi por que no esta en un .env.
- */
 export const SERVICIOS = {
   identidad: process.env.NEXT_PUBLIC_API_IDENTIDAD ?? ENDPOINTS.identidad,
   portafolios: process.env.NEXT_PUBLIC_API_PORTAFOLIOS ?? ENDPOINTS.portafolios,
@@ -47,8 +34,6 @@ export type Sesion = {
   nombre: string;
   rol: "admin" | "pmo" | "pm" | "miembro";
   tenant_id: string;
-  /** Nombre visible de la organizacion. Lo guarda el login desde /tenants:
-   *  tenerlo cableado rompia con cada organizacion nueva. */
   tenant_nombre?: string;
 };
 
@@ -90,12 +75,6 @@ type Opciones = {
   sinToken?: boolean;
 };
 
-/**
- * Llama a un microservicio y devuelve { datos, meta } ya desempaquetados.
- *
- * Un 401 significa que el token vencio (duran 12 horas): se limpia la sesion y
- * se vuelve al login, en vez de dejar la pantalla con errores raros.
- */
 export async function llamar<T>(
   servicio: Servicio,
   ruta: string,
@@ -158,11 +137,8 @@ export async function llamar<T>(
     return { datos: okCuerpo.datos, meta: okCuerpo.meta };
   }
 
-  // Error con NUESTRA forma: { ok: false, error: { codigo, mensaje } }
   const propio = (cuerpo as ErrorApi).error;
 
-  // 403: el token es valido pero el recurso es de otra organizacion o el rol
-  // no alcanza. No cierra la sesion (a diferencia del 401).
   if (r.status === 403) {
     throw new FalloApi(
       propio?.codigo ?? "PROHIBIDO",
@@ -176,11 +152,6 @@ export async function llamar<T>(
     throw new FalloApi(propio.codigo, propio.mensaje, r.status);
   }
 
-  // Error generado por API GATEWAY, que tiene otra forma:
-  //   { "message": "Internal server error" }
-  // Leer error.codigo aqui reventaba con "Cannot read properties of
-  // undefined", y el usuario veia un error de JavaScript en vez de saber
-  // que el servidor fallo.
   const generico = (cuerpo as { message?: string }).message;
   if (r.status >= 500) {
     throw new FalloApi(
@@ -197,7 +168,6 @@ export async function llamar<T>(
   );
 }
 
-/** Formatea un monto en soles sin decimales, que es como se lee un presupuesto. */
 export function soles(n: number | string | null | undefined): string {
   const v = Number(n ?? 0);
   return v.toLocaleString("es-PE", {

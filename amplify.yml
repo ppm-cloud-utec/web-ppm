@@ -1,6 +1,3 @@
-# Configuracion de build para AWS Amplify.
-# Las variables NEXT_PUBLIC_API_* se definen en la consola de Amplify, en
-# App settings > Environment variables.
 version: 1
 frontend:
   phases:

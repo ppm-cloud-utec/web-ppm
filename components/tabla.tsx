@@ -1,16 +1,13 @@
 "use client";
 
-/** Tabla densa con ordenamiento por columna. */
 
 import { useMemo, useState } from "react";
 
 export type Columna<T> = {
   clave: string;
   titulo: string;
-  /** Alinea a la derecha los numeros. */
   numerica?: boolean;
   ancho?: string;
-  /** Valor por el que se ordena; si falta, se usa fila[clave]. */
   orden?: (fila: T) => string | number;
   render: (fila: T) => React.ReactNode;
 };
@@ -70,8 +67,6 @@ export function Tabla<T extends Record<string, any>>({
                     className={`inline-flex items-center gap-1 rounded transition-colors hover:text-tinta ${
                       activa ? "text-tinta" : ""
                     }`}
-                    // Decir en voz alta como esta ordenado: el simbolo solo
-                    // no llega a quien usa lector de pantalla.
                     aria-label={`Ordenar por ${c.titulo}${
                       activa ? (orden?.desc ? ", descendente" : ", ascendente") : ""
                     }`}

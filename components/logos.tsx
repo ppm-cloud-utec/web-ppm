@@ -1,19 +1,6 @@
-/**
- * Marcas de las organizaciones de la demo.
- *
- * Cada empresa tiene un simbolo propio derivado de su oficio, no una inicial
- * dentro de un cuadro de color. En una aplicacion multi-tenant eso no es
- * adorno: al cambiar de organizacion delante de alguien, el cambio de marca
- * es la prueba visual de que de verdad son dos espacios distintos.
- *
- * Trazo geometrico, un color por empresa, sin degradados ni volumenes. Los
- * colores evitan el verde, el ambar y el rojo, reservados al semaforo de
- * salud.
- */
 
 type Props = { tam?: number; className?: string };
 
-/** Acme Ingenieria — obra civil. Una celosia: el tramo y sus diagonales. */
 export function AcmeMarca({ tam = 24, className }: Props) {
   return (
     <svg width={tam} height={tam} viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
@@ -24,7 +11,6 @@ export function AcmeMarca({ tam = 24, className }: Props) {
   );
 }
 
-/** Globex Consulting — marcos de analisis. Una matriz con un cuadrante lleno. */
 export function GlobexMarca({ tam = 24, className }: Props) {
   return (
     <svg width={tam} height={tam} viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
@@ -34,7 +20,6 @@ export function GlobexMarca({ tam = 24, className }: Props) {
   );
 }
 
-/** Initech Software — los dos signos que abren y cierran todo codigo. */
 export function InitechMarca({ tam = 24, className }: Props) {
   return (
     <svg width={tam} height={tam} viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
@@ -44,7 +29,6 @@ export function InitechMarca({ tam = 24, className }: Props) {
   );
 }
 
-/** Umbrella Corp — farmaceutica. El hexagono del anillo molecular. */
 export function UmbrellaMarca({ tam = 24, className }: Props) {
   return (
     <svg width={tam} height={tam} viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
@@ -61,11 +45,6 @@ const POR_TENANT: Record<string, (p: Props) => React.JSX.Element> = {
   "t-umbrella": UmbrellaMarca,
 };
 
-/**
- * Marca de una organizacion. Si es una creada con la maquina de estados y
- * todavia no tiene simbolo propio, cae en la ficha de inicial: es mejor eso
- * que inventarle un logo que no es suyo.
- */
 export function MarcaOrganizacion({
   tenantId,
   nombre,

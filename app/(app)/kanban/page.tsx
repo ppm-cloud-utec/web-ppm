@@ -1,6 +1,5 @@
 "use client";
 
-/** Kanban de proyectos por estado. */
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -38,7 +37,6 @@ export default function Kanban() {
       .catch((e: FalloApi) => setError(e.message));
   }, []);
 
-  /** Mover una tarjeta cambia el estado del proyecto por la API. */
   async function mover(p: Proyecto, nuevo: string) {
     if (p.estado === nuevo) return;
     setMoviendo(p.id);
@@ -54,7 +52,6 @@ export default function Kanban() {
         });
       }
     } catch (e) {
-      // Si falla, se revierte en pantalla: no se deja una mentira visible.
       setProyectos((lista) =>
         lista!.map((x) => (x.id === p.id ? { ...x, estado: antes } : x)),
       );
